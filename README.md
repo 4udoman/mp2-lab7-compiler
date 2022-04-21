@@ -32,3 +32,7 @@ __Цель данной работы__  — разработать програ�
 * Двоичное дерево
 * [Стек.][stack]
 * Хеш-таблица с цепочками.
+
+
+[stack]: https://www.bestprog.net/ru/2019/09/18/c-the-concept-of-stack-operations-on-the-stack-an-example-implementation-of-the-stack-as-a-dynamic-array-ru/
+
