@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{ce93ccd8-9c2e-4d7a-abb9-2f02edce60dc}</ProjectGuid>
-    <RootNamespace>main</RootNamespace>
+    <ProjectGuid>{53fd79e7-28b1-4d6d-a27e-bd3663075b51}</ProjectGuid>
+    <RootNamespace>compiler</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -72,17 +72,19 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\Users\Admin\Desktop\mp2-lab7-compiler\compiler;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Users\Admin\Desktop\mp2-lab7-compiler\data_structures;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
+    <IncludePath>C:\Users\Admin\Desktop\mp2-lab7-compiler\data_structures;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\Users\Admin\Desktop\mp2-lab7-compiler\compiler;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Users\Admin\Desktop\mp2-lab7-compiler\data_structures;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
+    <IncludePath>C:\Users\Admin\Desktop\mp2-lab7-compiler\data_structures;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -141,10 +143,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp" />
+    <ClInclude Include="TErrors.h" />
+    <ClInclude Include="executableObj.h" />
+    <ClInclude Include="lexem.h" />
+    <ClInclude Include="separator.h" />
+    <ClInclude Include="TPostfix.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="runtimeEnvironment.h" />
+    <ClCompile Include="TPostfix.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

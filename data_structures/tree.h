@@ -11,11 +11,11 @@ class Tree {
     Node(T x) :data(x) { next[0] = next[1] = nullptr; }
   };
   Node* root;
-  void DeleteNode(Node* p) {
+  void DeleteSubTree(Node* p) {
     if (p == nullptr)
       return;
-    DeleteNode(p->next[0]);
-    DeleteNode(p->next[1]);
+    DeleteSubTree(p->next[0]);
+    DeleteSubTree(p->next[1]);
     delete p;
     return;
   }
@@ -46,7 +46,7 @@ public:
     }
   }
   ~Tree() {
-    DeleteNode(root);
+    DeleteSubTree(root);
   }
 
   iterator begin() { return iterator(root); }
