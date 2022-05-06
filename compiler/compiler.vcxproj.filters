@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="TPostfix.h">
+    <ClInclude Include="postfix.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="lexem.h">
@@ -27,12 +27,12 @@
     <ClInclude Include="syntChecker.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="TErrors.h">
+    <ClInclude Include="exitCodes.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="TPostfix.cpp">
+    <ClCompile Include="postfix.cpp">
       <Filter>Файлы ресурсов</Filter>
     </ClCompile>
   </ItemGroup>

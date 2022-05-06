@@ -1,6 +1,6 @@
 #pragma once
-#include "TErrors.h"
-#include "TPostfix.h"
+#include "exitCodes.h"
+#include "postfix.h"
 #include "hierarchList.h"
 #include "unsortListTable.h"
 
@@ -13,6 +13,6 @@ private:
   TPostfix postfix;
 public:
   ExecutableObj();
-  Errors::ERRORS Execute();
+  ExitCodes::CODES Execute();
   ~ExecutableObj();
 };

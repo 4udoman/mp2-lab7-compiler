@@ -1,11 +1,11 @@
 #pragma once
-#include "TErrors.h"
+#include "exitCodes.h"
 #include "hierarchList.h"
 
 class SyntChecker
 {
 public:
   SyntChecker();
-  Errors::ERRORS Check(hierList* hl);
+  ExitCodes::CODES Check(hierList* hl);
   ~SyntChecker();
 };

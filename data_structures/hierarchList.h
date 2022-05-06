@@ -1,14 +1,14 @@
 #pragma once
 #include <string>
 #include <iostream>
-#include "tree.h"
+#include "binaryTree.h"
 
-class hierList : private Tree<std::string>
+class hierList : private BinaryTree<std::string>
 {
   // Здесь будет итератор, перевызывать, а не копировать
   // Подумать над private наследованием
 private:
-  Tree<std::string> lists;
+  BinaryTree<std::string> lists;
   std::istream& ReadFromStream(std::istream& in);
 public:
   hierList();

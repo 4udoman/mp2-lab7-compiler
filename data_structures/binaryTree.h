@@ -3,7 +3,7 @@
 #include "Stack.h"
 
 template <class T>
-class Tree 
+class BinaryTree 
 {
 protected:
   struct Node {
@@ -23,23 +23,21 @@ protected:
   }
 public:
   class iterator;
-  Tree() { root = new Node();  }
+  BinaryTree() { root = new Node();  }
   void Insert(iterator it, int i, T x) {
     if (it.cur->next[i] == nullptr) {
       it.cur->next[i] = new Node(x);
     }
   }
 
-  ~Tree() {
-    DeleteSubTree(root);
-  }
+  ~BinaryTree() { DeleteSubTree(root); }
 
   iterator begin() { return iterator(root); }
 
   class iterator {
     Node* cur;
   public:
-    friend Tree;
+    friend BinaryTree;
     iterator() :cur(nullptr) {};
     iterator(Node* i) : cur(i) {};
     iterator(const iterator& i) { cur = i.cur; }

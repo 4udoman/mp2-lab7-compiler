@@ -72,23 +72,23 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\Users\Admin\Desktop\mp2-lab7-compiler\gtest\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\Admin\Desktop\mp2-lab7-compiler\gtest\lib\Debug;$(LibraryPath)</LibraryPath>
+    <IncludePath>..\gtest\include;$(IncludePath)</IncludePath>
+    <LibraryPath>..\gtest\lib\Debug;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>C:\Users\Admin\Desktop\mp2-lab7-compiler\gtest\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\Admin\Desktop\mp2-lab7-compiler\gtest\lib\Release;$(LibraryPath)</LibraryPath>
+    <IncludePath>..\gtest\include;$(IncludePath)</IncludePath>
+    <LibraryPath>..\gtest\lib\Release;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\Users\Admin\Desktop\mp2-lab7-compiler\gtest\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\Admin\Desktop\mp2-lab7-compiler\gtest\lib\Debug;$(LibraryPath)</LibraryPath>
+    <IncludePath>..\gtest\include;$(IncludePath)</IncludePath>
+    <LibraryPath>..\gtest\lib\Debug;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>C:\Users\Admin\Desktop\mp2-lab7-compiler\gtest\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\Admin\Desktop\mp2-lab7-compiler\gtest\lib\Release;$(LibraryPath)</LibraryPath>
+    <IncludePath>..\gtest\include;$(IncludePath)</IncludePath>
+    <LibraryPath>..\gtest\lib\Release;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -97,6 +97,7 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <AdditionalIncludeDirectories>..\compiler;..\data_structures</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -113,6 +114,7 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <AdditionalIncludeDirectories>..\compiler;..\data_structures</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -129,6 +131,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <AdditionalIncludeDirectories>..\compiler;..\data_structures</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -145,6 +148,7 @@
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <AdditionalIncludeDirectories>..\compiler;..\data_structures</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -157,6 +161,13 @@
   <ItemGroup>
     <ClCompile Include="..\gtest\src\gtest_main.cc" />
     <ClCompile Include="tests.cpp" />
+    <ClCompile Include="test_binary_tree.cpp" />
+    <ClCompile Include="test_syntChecker.cpp" />
+    <ClCompile Include="test_hierarchList.cpp" />
+    <ClCompile Include="test_list.cpp" />
+    <ClCompile Include="test_postfix.cpp" />
+    <ClCompile Include="test_stack.cpp" />
+    <ClCompile Include="test_unsortListTable.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
