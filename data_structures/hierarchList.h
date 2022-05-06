@@ -5,14 +5,11 @@
 
 class hierList : private Tree<std::string>
 {
-<<<<<<< HEAD
   // Здесь будет итератор, перевызывать, а не копировать
   // Подумать над private наследованием
 private:
   Tree<std::string> lists;
   std::istream& ReadFromStream(std::istream& in);
-=======
->>>>>>> 78dd596d9204c3257c90f3ba91bfcb858fdfc4f8
 public:
   hierList();
 
