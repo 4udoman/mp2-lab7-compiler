@@ -8,10 +8,6 @@ using std::string;
 using std::vector;
 using std::map;
 
-// TPostfix (содержит все проверки)
-// TPostfixAlg (наследуется от TPostfix, выполняет алгебраические вычисления)
-// TPostfixFunc (наследуется от TPostfix)
-
 template <class TData>
 class Operations // Класс, хранящий поддерживаемые операции
 {

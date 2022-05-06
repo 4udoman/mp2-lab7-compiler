@@ -4,13 +4,13 @@
 
 class Errors
 {
+  std::vector<std::string> ErrorList;
 public:
-  enum ERRORS
+  enum class ERRORS
   {
     ALL_IS_GOOD = 0,
     UNEXPECTED_ERROR
   };
-  std::vector<std::string> ErrorList;
   Errors()
   {
     ErrorList.push_back("All is good");

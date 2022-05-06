@@ -24,7 +24,7 @@
     <ClInclude Include="executableObj.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="separator.h">
+    <ClInclude Include="syntChecker.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="TErrors.h">

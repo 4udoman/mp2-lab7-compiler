@@ -2,8 +2,6 @@
 #include <vector>
 #include <string>
 
-// Что писать
-
 class Lexem
 {
 private:

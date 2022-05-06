@@ -146,7 +146,7 @@
     <ClInclude Include="TErrors.h" />
     <ClInclude Include="executableObj.h" />
     <ClInclude Include="lexem.h" />
-    <ClInclude Include="separator.h" />
+    <ClInclude Include="syntChecker.h" />
     <ClInclude Include="TPostfix.h" />
   </ItemGroup>
   <ItemGroup>
