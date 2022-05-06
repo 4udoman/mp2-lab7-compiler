@@ -3,7 +3,9 @@
 #include "Stack.h"
 
 template <class T>
-class Tree {
+class Tree 
+{
+protected:
   struct Node {
     T data;
     Node* next[2];
@@ -27,24 +29,7 @@ public:
       it.cur->next[i] = new Node(x);
     }
   }
-  void Print() {
-    Node* p = root;
-    TStack<Node*> s;
-    while (true) {
-      if (p != nullptr) {
-        for (int i = 0; i < s.size(); ++i)
-          std::cout << ' ';
-        std::cout << p->data << std::endl;
-        s.push(p);
-        p = p->next[0];
-      }
-      else if (s.empty()) break;
-      else {
-        p = s.tos(); s.pop();
-        p = p->next[1];
-      }
-    }
-  }
+
   ~Tree() {
     DeleteSubTree(root);
   }
