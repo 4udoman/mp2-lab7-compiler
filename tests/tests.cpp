@@ -1,6 +1,8 @@
 #include <gtest/gtest.h>
 
-TEST(Example, real_test)
-{
-  EXPECT_EQ(1, 1);
-}
+// try(a := 2) using table of vars?
+// 
+// a+- syntax
+// 
+// ≈сть класс который уже подготавливает нам нужные данные, т.е. таблицу и иерарх. список
+
