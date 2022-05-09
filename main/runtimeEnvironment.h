@@ -1,5 +1,5 @@
 #pragma once
-#include "TErrors.h"
+//#include "TErrors.h"
 #include "executableObj.h"
 #include "syntChecker.h"
 

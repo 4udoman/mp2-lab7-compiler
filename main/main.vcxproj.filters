@@ -24,4 +24,12 @@
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="program.txt">
+      <Filter>Файлы ресурсов</Filter>
+    </Text>
+    <Text Include="test.txt">
+      <Filter>Файлы ресурсов</Filter>
+    </Text>
+  </ItemGroup>
 </Project>

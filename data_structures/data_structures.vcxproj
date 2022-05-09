@@ -140,7 +140,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="binaryTree.h" />
-    <ClInclude Include="hierarchList.h" />
     <ClInclude Include="list.h" />
     <ClInclude Include="stack.h" />
     <ClInclude Include="unsortListTable.h" />

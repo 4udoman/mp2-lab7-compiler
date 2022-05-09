@@ -1,7 +1,10 @@
 #include <iostream>
+//#include "runtimeEnviroment.h"
+#include "binaryTree.h"
 
 int main()
 {
-  std::cout << "Hello world!\n";
+  HierarchyList l("program.txt");
+  std::cout << l << std::endl;
   return 0;
 }

@@ -24,9 +24,6 @@
     <ClInclude Include="unsortListTable.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="hierarchList.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
     <ClInclude Include="binaryTree.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
