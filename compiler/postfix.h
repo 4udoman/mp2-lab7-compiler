@@ -59,6 +59,7 @@ private:
   void DeleteSpaces(std::string& str);
   std::string IsDiff(const char& str);
 public:
+  TPostfix() {}
   TPostfix(std::string str, UnsortListTable<std::string, int>* tb = nullptr) {// Конструктор
     if (!BracketsCorrect(str))
       throw std::string("The brackets in expression are incorrect");

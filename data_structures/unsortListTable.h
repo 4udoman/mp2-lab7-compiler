@@ -3,25 +3,19 @@
 #include <string.h>
 #include "list.h"
 
-template <class TKey, class TData>
-class TTable {
-public:
-  virtual void Insert(TData) = 0;
-  virtual TData* Find(TKey) = 0;
-  virtual void Delete(TKey) = 0;
-  virtual void Print() = 0;
-  virtual ~TTable() = 0 { }
-};
-
 template<class TKey, class TData>
-class UnsortListTable final : public TTable<TKey, TData> {
+class UnsortListTable{
 private:
-  TList<TData> list;
+  struct Cell {
+    TKey key;
+    TData data;
+  };
+  TList<Cell> list;
 
 public:
   UnsortListTable() {}
 
-  void changeValue(TKey key, TData data) ////////////////////////////////////////////////
+  void changeValue(TKey key, TData data) 
   {
     TData* p = Find(key);
     if (p == nullptr)
@@ -29,26 +23,26 @@ public:
     *p = data;
   }
 
-  void Insert(TData data) override {
-    list.InsertFirst(data);
+  void Insert(TKey key, TData data) {
+    list.InsertFirst(Cell(key, data));
   }
 
-  TData* Find(TKey name) override {
+  TData* Find(TKey key) {
     for (auto it = list.begin(); it != list.end(); ++it)
-      if (*it == name)
-        return &(*it);
+      if (it->key == key)
+        return &(it->data);
     return nullptr;
   }
 
-  void Delete(TKey name) override {
+  void Delete(TKey key) {
     for (auto it = list.begin(); it != list.end(); ++it)
-      if (*it == name)
+      if (it->key == key)
         list.Delete(it);
   }
 
-  void Print() override {
+  void PrintKeys() {
     for (auto it = list.cbegin(); it != list.cend(); ++it)
-      std::cout << *it << std::endl;
+      std::cout << it->key << std::endl;
   }
 
   ~UnsortListTable() { }

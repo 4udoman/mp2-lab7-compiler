@@ -1,10 +1,12 @@
 #include <iostream>
-//#include "runtimeEnviroment.h"
-#include "binaryTree.h"
+#include "runtimeEnv.h"
 
 int main()
 {
-  HierarchyList l("program.txt");
-  std::cout << l << std::endl;
+  //static RuntimeEnv nachOS;
+  //nachOS.Run();
+  //HierarchyList l;
+  //l.Build("program.txt");
+  //std::cout << l << std::endl;
   return 0;
 }

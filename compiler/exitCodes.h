@@ -1,20 +1,16 @@
 #pragma once
-#include <vector>
-#include <string>
 
-class ExitCodes
+struct ExitCodes
 {
-  std::vector<std::string> ErrorList;
-public:
+  static const char* ErrorList[]; 
   enum class CODES
   {
     ALL_IS_GOOD = 0,
     UNEXPECTED_ERROR
   };
-  ExitCodes()
-  {
-    ErrorList.push_back("All is good");
-    ErrorList.push_back("Unexpected error");
-  }
-  ~ExitCodes();
+};
+
+const char* ExitCodes::ErrorList[] = {
+    "All is good",
+    "Unexpected error"
 };

@@ -1,11 +1,11 @@
 #pragma once
 #include "exitCodes.h"
-#include "hierarchList.h"
+#include "hierarchyList.h"
 
 class SyntChecker
 {
 public:
-  SyntChecker();
-  ExitCodes::CODES Check(hierList* hl);
-  ~SyntChecker();
+  SyntChecker() {}
+  static ExitCodes::CODES Check(HierarchyList* hl) {}
+  ~SyntChecker() {}
 };

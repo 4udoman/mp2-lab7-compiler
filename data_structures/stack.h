@@ -12,7 +12,7 @@ private:
   int Size;
   int curSize;
   int top;
-  TStack(const TStack&) = delete; // Запрет на копирование стека
+  TStack(const TStack&) = delete;
   void operator=(const TStack&) = delete; // Запрет на присваивание стека
 
 public:

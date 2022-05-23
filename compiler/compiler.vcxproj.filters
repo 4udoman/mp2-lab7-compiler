@@ -21,7 +21,7 @@
     <ClInclude Include="lexem.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="executableObj.h">
+    <ClInclude Include="execObj.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="syntChecker.h">
