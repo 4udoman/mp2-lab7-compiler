@@ -117,159 +117,165 @@ void TPostfix::Execute(HierarchyList::iterator* it)
   TStack<std::string> argumets;
   for (size_t i = 0; i < postfix.size(); i++)
   {
-    switch (KeyWord(postfix[i]))
+    std::string tmp = postfix[i];
+    if (tmp == "program")
     {
-    case KeyWords::_program:
       it->next();
-      break;
-    case KeyWords::_const:
+    }
+    else if (tmp == "const")
+    {
       it->down();
-      break;
-    case KeyWords::_var:
+    }
+    else if (tmp == "var")
+    {
       it->down();
-      break;
-    case KeyWords::_begin:
+    }
+    else if (tmp == "begin")
+    {
       it->down();
-      break;
-    case KeyWords::_end:
+    }
+    else if (tmp == "end")
+    {
       it->up();
       it->next();
-      break;
-    case KeyWords::_if:
+    }
+    else if (tmp == "if")
+    {
       if (CalculateIf(argumets.pop()))
         it->down();
       else
         it->next();
       break;
-    case KeyWords::_else:
+    }
+    else if (tmp == "else")
+    {
       it->down();
       break;
-    default:
-      break;
     }
-
-    //значит, функция write, read, writeln :=
-    //:= точно бинарная
-    //read - точно унарная
-    //write - неопределенная
-    if (isFunction(postfix[i]))
-    {
-      ////////write
-      if (postfix[i] == "write")
-      {
-        std::vector<std::string> temp;
-        while (!argumets.empty())
-        {
-          temp.push_back(argumets.pop());
-        }
-        for (size_t j = temp.size() - 1; j >= 0; j--)
-        {
-          if (tableInt->Find(temp[j]) != nullptr)
-          {
-            std::cout << tableInt->Find(temp[j]);
-            continue;
-          }
-          else if (tableDouble->Find(temp[j]) != nullptr)
-          {
-            std::cout << tableInt->Find(temp[j]);
-            continue;
-          }
-          std::cout << temp[j];
-        }
-      }
-      ////////read
-      else if (postfix[i] == "read")
-      {
-        if (tableInt->Find(argumets.tos()) != nullptr)
-        {
-          int variable;
-          std::cin >> variable;
-          tableInt->changeValue(argumets.pop(), variable);
-          break;
-        }
-        else if (tableDouble->Find(argumets.tos()) != nullptr)
-        {
-          double variable;
-          std::cin >> variable;
-          tableDouble->changeValue(argumets.pop(), variable);
-          break;
-        }
-        else
-          throw std::string("No such variable!");
-      }
-      ////////:=
-      else if (postfix[i] == ":=")
-      {
-        std::string expression = argumets.pop();
-        if (tableInt->Find(argumets.tos()) != nullptr)
-        {
-          int variable = *this->CalculateInt(expression);
-          tableInt->changeValue(argumets.pop(), variable);
-          break;
-        }
-        else if (tableDouble->Find(argumets.tos()) != nullptr)
-        {
-          double variable = *this->CalculateDouble(expression);
-          tableDouble->changeValue(argumets.pop(), variable);
-          break;
-        }
-        else
-          throw std::string("No such variable!");
-      }
-      ////////: снаружи можно установить флаг, что это блок const, чтобы при добавлении переменных указывать это.
-      else if (postfix[i] == ":")
-      {
-        if (argumets.pop() == "integer")
-        {
-          //значит, переменным присвоили значения (+3 так как после двоеточия идут 2 элемента)
-          if (postfix[i].size() == i + 3)
-          {
-            std::string expression = postfix[++i];
-            int variable = *this->CalculateInt(expression);
-            while (!argumets.empty())
-            {
-              tableInt->Insert(argumets.pop(), variable);
-            }
-          }
-          //переменным не присвоили значения
-          else if (postfix[i].size() == i + 1)
-          {
-            while (!argumets.empty())
-            {
-              tableInt->Insert(argumets.pop(), 0);
-            }
-          }
-          else
-            throw std::string("Ошибка инициализации!");
-        }
-        //переменная типа double
-        else
-        {
-          if (postfix[i].size() == i + 3)
-          {
-            std::string expression = postfix[++i];
-            double variable = *this->CalculateDouble(expression);
-            while (!argumets.empty())
-            {
-              tableDouble->Insert(argumets.pop(), variable);
-            }
-          }
-          //переменным не присвоили значения
-          else if (postfix[i].size() == i + 1)
-          {
-            while (!argumets.empty())
-            {
-              tableDouble->Insert(argumets.pop(), 0.0);
-            }
-          }
-          else
-            throw std::string("Ошибка инициализации!");
-        }
-      }
-    }
-    //Значит, переменная, кладем ее в стек
-    argumets.push(postfix[i]);
   }
+
+  //значит, функция write, read, writeln :=
+  //:= точно бинарная
+  //read - точно унарная
+  //write - неопределенная
+  if (isFunction(postfix[i]))
+  {
+    ////////write
+    if (postfix[i] == "write")
+    {
+      std::vector<std::string> temp;
+      while (!argumets.empty())
+      {
+        temp.push_back(argumets.pop());
+      }
+      for (size_t j = temp.size() - 1; j >= 0; j--)
+      {
+        if (tableInt->Find(temp[j]) != nullptr)
+        {
+          std::cout << tableInt->Find(temp[j]);
+          continue;
+        }
+        else if (tableDouble->Find(temp[j]) != nullptr)
+        {
+          std::cout << tableInt->Find(temp[j]);
+          continue;
+        }
+        std::cout << temp[j];
+      }
+    }
+    ////////read
+    else if (postfix[i] == "read")
+    {
+      if (tableInt->Find(argumets.tos()) != nullptr)
+      {
+        int variable;
+        std::cin >> variable;
+        tableInt->changeValue(argumets.pop(), variable);
+        break;
+      }
+      else if (tableDouble->Find(argumets.tos()) != nullptr)
+      {
+        double variable;
+        std::cin >> variable;
+        tableDouble->changeValue(argumets.pop(), variable);
+        break;
+      }
+      else
+        throw std::string("No such variable!");
+    }
+    ////////:=
+    else if (postfix[i] == ":=")
+    {
+      std::string expression = argumets.pop();
+      if (tableInt->Find(argumets.tos()) != nullptr)
+      {
+        int variable = *this->CalculateInt(expression);
+        tableInt->changeValue(argumets.pop(), variable);
+        break;
+      }
+      else if (tableDouble->Find(argumets.tos()) != nullptr)
+      {
+        double variable = *this->CalculateDouble(expression);
+        tableDouble->changeValue(argumets.pop(), variable);
+        break;
+      }
+      else
+        throw std::string("No such variable!");
+    }
+    ////////: снаружи можно установить флаг, что это блок const, чтобы при добавлении переменных указывать это.
+    else if (postfix[i] == ":")
+    {
+      if (argumets.pop() == "integer")
+      {
+        //значит, переменным присвоили значения (+3 так как после двоеточия идут 2 элемента)
+        if (postfix[i].size() == i + 3)
+        {
+          std::string expression = postfix[++i];
+          int variable = *this->CalculateInt(expression);
+          while (!argumets.empty())
+          {
+            tableInt->Insert(argumets.pop(), variable);
+          }
+        }
+        //переменным не присвоили значения
+        else if (postfix[i].size() == i + 1)
+        {
+          while (!argumets.empty())
+          {
+            tableInt->Insert(argumets.pop(), 0);
+          }
+        }
+        else
+          throw std::string("Ошибка инициализации!");
+      }
+      //переменная типа double
+      else
+      {
+        if (postfix[i].size() == i + 3)
+        {
+          std::string expression = postfix[++i];
+          double variable = *this->CalculateDouble(expression);
+          while (!argumets.empty())
+          {
+            tableDouble->Insert(argumets.pop(), variable);
+          }
+        }
+        //переменным не присвоили значения
+        else if (postfix[i].size() == i + 1)
+        {
+          while (!argumets.empty())
+          {
+            tableDouble->Insert(argumets.pop(), 0.0);
+          }
+        }
+        else
+          throw std::string("Ошибка инициализации!");
+      }
+    }
+  }
+  //Значит, переменная, кладем ее в стек
+  argumets.push(postfix[i]);
+}
 }
 
 //
