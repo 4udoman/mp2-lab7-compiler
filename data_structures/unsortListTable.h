@@ -45,6 +45,15 @@ public:
       std::cout << it->key << std::endl;
   }
 
+  UnsortListTable<TKey, TData> operator+(const UnsortListTable<TKey, TData>& t) {
+    UnsortListTable<TKey, TData> res;
+    for (auto it = list.cbegin(); it != list.cend(); it++)
+      res.list.InsertFirst(*it);
+    for (auto it = t.list.cbegin(); it != t.list.cend(); it++)
+      res.list.InsertFirst(*it);
+    return res;
+  }
+
   ~UnsortListTable() { }
 
 };
