@@ -1,26 +1,6 @@
 #include "postfix.h"
 #include "syntax.h"
 
-bool TPostfix::BracketsCorrect(const std::string& str) const
-{
-  TStack<bool> stack; // Стек для проверки наличия '('
-  for (const char& elem : str) {
-    if (elem == '(') {
-      stack.push(true);
-      continue;
-    }
-    if (elem == ')') {
-      if (stack.empty()) // Если стек пуст, то нет пары для ')' -> ошибка
-        return false;
-      stack.pop();
-      continue;
-    }
-  }
-  if (!stack.empty()) // Если стек не пуст, то слишком мало ')' -> ошибка
-    return false;
-  return true;
-}
-
 //Инфикс для логических выражений и функций, а не для алгебраических вычислений
 void TPostfix::ToInfix(const std::string& str)
 {
@@ -118,7 +98,7 @@ void TPostfix::ToInfix(const std::string& str)
 //  return true;
 //}
 //
-inline void TPostfix::DeleteSpaces(string& str)
+inline void TPostfix::DeleteSpaces(std::string& str)
 {
   for (size_t i = 0; i < str.size(); i++) {
     if (str[i] == ' ')
@@ -127,7 +107,7 @@ inline void TPostfix::DeleteSpaces(string& str)
 }
 KeyWords TPostfix::KeyWord(const std::string& str)
 {
-  return KeyWords::begin;
+  return KeyWords::_begin;
 }
 bool TPostfix::IsFunction(const std::string& str)
 {
@@ -137,26 +117,26 @@ bool TPostfix::IsFunction(const std::string& str)
 //Здесь выполняются функции, а также переставляется итератор
 void TPostfix::Execute(HierarchyList::iterator* it)
 {
-  TStack<string> argumets;
+  TStack<std::string> argumets;
   for (size_t i = 0; i < postfix.size(); i++)
   {
     switch (KeyWord(postfix[i]))
     {
-    case KeyWords::program:
+    case KeyWords::_program:
       it->next();
       break;
     case KeyWords::_const:
       it->down();
       break;
-    case KeyWords::var:
+    case KeyWords::_var:
       it->down();
       break;
-    case KeyWords::begin:
+    case KeyWords::_begin:
       it->down();
       break;
-      //переделать
-    case KeyWords::end:
+    case KeyWords::_end:
       it->up();
+      it->next();
       break;
     case KeyWords::_if:
       if (CalculateIf(argumets.pop()))
@@ -180,24 +160,24 @@ void TPostfix::Execute(HierarchyList::iterator* it)
       ////////write
       if (postfix[i] == "write")
       {
-        vector<string> temp;
+        std::vector<std::string> temp;
         while (!argumets.empty())
-        {   
+        {
           temp.push_back(argumets.pop());
         }
         for (size_t j = temp.size() - 1; j >= 0; j--)
         {
           if (tableInt->Find(temp[j]) != nullptr)
           {
-            cout << tableInt->Find(temp[j]);
+            std::cout << tableInt->Find(temp[j]);
             continue;
           }
           else if (tableDouble->Find(temp[j]) != nullptr)
           {
-            cout << tableInt->Find(temp[j]);
+            std::cout << tableInt->Find(temp[j]);
             continue;
           }
-          cout << temp[j];
+          std::cout << temp[j];
         }
       }
       ////////read
@@ -206,14 +186,14 @@ void TPostfix::Execute(HierarchyList::iterator* it)
         if (tableInt->Find(argumets.tos()) != nullptr)
         {
           int variable;
-          cin >> variable;
+          std::cin >> variable;
           tableInt->changeValue(argumets.pop(), variable);
           break;
         }
         else if (tableDouble->Find(argumets.tos()) != nullptr)
         {
           double variable;
-          cin >> variable;
+          std::cin >> variable;
           tableDouble->changeValue(argumets.pop(), variable);
           break;
         }

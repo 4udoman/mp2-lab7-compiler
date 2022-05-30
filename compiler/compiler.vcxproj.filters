@@ -18,9 +18,6 @@
     <ClInclude Include="postfix.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="lexem.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
     <ClInclude Include="execObj.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
