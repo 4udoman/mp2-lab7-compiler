@@ -4,6 +4,34 @@
 #include <map>
 #include "stack.h"
 #include "unsortListTable.h"
+#include "hierarchyList.h"
+using namespace std;
+
+enum class KeyWords
+{
+  program = 1,
+  _const,
+  var,
+  begin,
+  end,
+  _if,
+  _else
+};
+
+class Functions
+{
+public:
+  Functions()
+  {
+
+  }
+  void Execute(string operation, vector<string> arguments)
+  {
+    
+  }
+};
+
+
 
 class Operations // Класс, хранящий поддерживаемые операции
 {
@@ -45,28 +73,47 @@ public:
 class TPostfix {
 private:
   Operations operation;
-  UnsortListTable<std::string, int>* table;
-
+  UnsortListTable<std::string, int>* tableInt;
+  UnsortListTable<std::string, double>* tableDouble;
   std::vector<std::string> infix;
   std::vector<std::string> postfix;
   TPostfix(const TPostfix&) = delete; // Запрет на копирование
   void operator=(const TPostfix&) = delete; // Запрет на присваивание
   bool BracketsCorrect(const std::string& str) const; // Проверка на корректность раставления скобок в полученной на вход строке
-  void ToInfix(const std::string& str); // Преобразование полученной строки в vector<string> infix
+  void ToInfix(const std::string& str);
+  void ToInfixCalc(const std::string& str);// Преобразование полученной строки в vector<string> infix
   void ToPostfix(); // Преобразование infix в vector<string> postfix
-  bool IsMonom(const std::string& lexem);
   bool IsNumber(const std::string& lexem);
   void DeleteSpaces(std::string& str);
-  std::string IsDiff(const char& str);
+  double Calculate();
+  KeyWords KeyWord(const string& str);
+  bool IsFunction(const string& str);
+
 public:
-  TPostfix() {}
-  TPostfix(std::string str, UnsortListTable<std::string, int>* tb = nullptr) {// Конструктор
-    if (!BracketsCorrect(str))
-      throw std::string("The brackets in expression are incorrect");
-    table = tb;
+  TPostfix()
+  {
+
+  }
+  TPostfix(UnsortListTable<std::string, int>* _tableInt, UnsortListTable<std::string, double>* _tableDouble)
+  {
+    tableInt = _tableInt;
+    tableDouble = _tableDouble;
+  }
+
+  void Init(UnsortListTable<std::string, int>* _tableInt, UnsortListTable<std::string, double>* _tableDouble)
+  {
+    tableInt = _tableInt;
+    tableDouble = _tableDouble;
+  }
+
+  void NewInfix(const string& str)
+  {
+    if (BracketsCorrect(str) == false) 
+      throw string("BracketsError");    
     ToInfix(str);
     ToPostfix();
   }
+
   std::vector<std::string> GetInfix() const { return infix; }
   std::vector<std::string> GetPostfix() const { return postfix; }
 
@@ -84,5 +131,6 @@ public:
     return tmp;
   }
 
-  int Calculate();
+  void Execute(HierarchyList::iterator* it);
+  
 };

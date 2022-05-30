@@ -148,6 +148,7 @@
     <ClInclude Include="lexem.h" />
     <ClInclude Include="syntChecker.h" />
     <ClInclude Include="postfix.h" />
+    <ClInclude Include="variable.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="postfix.cpp" />

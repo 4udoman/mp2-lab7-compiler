@@ -1,85 +1,64 @@
 #include "postfix.h"
 //
-//bool TPostfix::BracketsCorrect(const string& str) const
-//{
-//  TStack<bool> stack; // Стек для проверки наличия '('
-//  for (const char& elem : str) {
-//    if (elem == '(') {
-//      stack.push(true);
-//      continue;
-//    }
-//    if (elem == ')') {
-//      if (stack.empty()) // Если стек пуст, то нет пары для ')' -> ошибка
-//        return false;
-//      stack.pop();
-//      continue;
-//    }
-//  }
-//  if (!stack.empty()) // Если стек не пуст, то слишком мало ')' -> ошибка
-//    return false;
-//  return true;
-//}
-//
-//void TPostfix::ToInfix(const string& str)
-//{
-//  string elem;
-//  string copyStr(str);
-//
-//  DeleteSpaces(copyStr);
-//  for (int i = 0; i < copyStr.size();) {
-//    string lexem;
-//    elem = copyStr[i];
-//    if (elem == "/") {
-//      i++;
-//      continue;
-//    }
-//
-//    //проверка на то, операция ли это или нет, если да, то в tmp записываем эту операцию и увеличиваем счетчик на 1
-//    if (operation.IsOperation(elem)) {
-//      lexem = elem;
-//      i++;
-//      if (elem == "d" || elem == "I") {
-//        string variable = IsDiff(copyStr[i]);
-//        if (variable != "none") {
-//          elem = variable;
-//          infix.push_back(elem);
-//          i++;
-//          continue;
-//        }
-//        else if (copyStr[i] != '(') {
-//          lexem = "";
-//          elem += copyStr[i];
-//          while ((!operation.IsOperation(elem) && i < copyStr.size()) || elem == "d" || elem == "I") {
-//            lexem += elem;
-//            elem = copyStr[++i];
-//          }
-//        }
-//      }
-//    }
-//    else {
-//      while ((!operation.IsOperation(elem) && i < copyStr.size()) || (elem == "d") || (elem == "I")) {
-//        lexem += elem;
-//        elem = copyStr[++i];
-//      }
-//    }
-//
-//    if ((lexem == "-") && (infix.size() == 0 || (infix.size() > 0 && infix[infix.size() - 1] == "("))) // Превращение унарного минуса в бинарный
-//      infix.push_back("0");
-//    //проверка на моном
-//    if (IsMonom(lexem)) {
-//      infix.push_back(lexem);
-//      continue;
-//    }
-//    //проверка на правильность введенной переменной
-//    if (lexem.find_first_of("0123456789") == 0 && lexem.find_first_not_of("0123456789.") != string::npos) {// Проверка на корректность имени переменной, если это переменная
-//      std::string exc = "Invalid format of variable: " + lexem;
-//      throw exc;
-//    }
-//    if (lexem.size() != 0)
-//      infix.push_back(lexem);
-//  }
-//}
-//
+bool TPostfix::BracketsCorrect(const string& str) const
+{
+  TStack<bool> stack; // Стек для проверки наличия '('
+  for (const char& elem : str) {
+    if (elem == '(') {
+      stack.push(true);
+      continue;
+    }
+    if (elem == ')') {
+      if (stack.empty()) // Если стек пуст, то нет пары для ')' -> ошибка
+        return false;
+      stack.pop();
+      continue;
+    }
+  }
+  if (!stack.empty()) // Если стек не пуст, то слишком мало ')' -> ошибка
+    return false;
+  return true;
+}
+
+//Инфикс для логических выражений и функций, а не для алгебраических вычислений
+void TPostfix::ToInfix(const string& str)
+{
+  string elem;
+  string copyStr(str);
+
+  DeleteSpaces(copyStr);
+  for (int i = 0; i < copyStr.size();)
+  {
+    string lexem;
+    elem = copyStr[i];
+
+
+    if (function.IsFunction(lexem))
+    {
+      infix.push_back(lexem);
+      lexem = "";
+      while (copyStr[i] != ';')
+      {
+
+      }
+    }
+    //if (operation.IsOperation(elem))
+    //{
+
+    //}
+
+    //if ((lexem == "-") && (infix.size() == 0 || (infix.size() > 0 && infix[infix.size() - 1] == "("))) // Превращение унарного минуса в бинарный
+    //  infix.push_back("0");
+    ////проверка на правильность введенной переменной
+    //if (lexem.find_first_of("0123456789") == 0 && lexem.find_first_not_of("0123456789.") != string::npos) {// Проверка на корректность имени переменной, если это переменная
+    //  std::string exc = "Invalid format of variable: " + lexem;
+    //  throw exc;
+    //}
+    //if (lexem.size() != 0)
+    //  infix.push_back(lexem);
+  }
+}
+
 //void TPostfix::ToPostfix()
 //{
 //  TStack<string> opStack;
@@ -138,24 +117,183 @@
 //  return true;
 //}
 //
-//inline void TPostfix::DeleteSpaces(string& str)
-//{
-//  for (size_t i = 0; i < str.size(); i++) {
-//    if (str[i] == ' ')
-//      str.erase(i, 1);
-//  }
-//}
-//
-//inline string TPostfix::IsDiff(const char& str)
-//{
-//  if (str == 'x')
-//    return "x";
-//  else if (str == 'y')
-//    return "y";
-//  else if (str == 'z')
-//    return "z";
-//  else return "none";
-//}
+inline void TPostfix::DeleteSpaces(string& str)
+{
+  for (size_t i = 0; i < str.size(); i++) {
+    if (str[i] == ' ')
+      str.erase(i, 1);
+  }
+}
+KeyWords TPostfix::KeyWord(const string& str)
+{
+  return KeyWords::begin;
+}
+bool TPostfix::IsFunction(const string& str)
+{
+  return false;
+}
+
+//Здесь выполняются функции, а также переставляется итератор
+void TPostfix::Execute(HierarchyList::iterator* it)
+{
+  TStack<string> argumets;
+  for (size_t i = 0; i < postfix.size(); i++)
+  {
+    switch (KeyWord(postfix[i]))
+    {
+    case KeyWords::program:
+      it->next();
+      break;
+    case KeyWords::_const:
+      it->down();
+      break;
+    case KeyWords::var:
+      it->down();
+      break;
+    case KeyWords::begin:
+      it->down();
+      break;
+      //переделать
+    case KeyWords::end:
+      it->up();
+      break;
+    case KeyWords::_if:
+      if (CalculateIf(argumets.pop()))
+        it->down();
+      else
+        it->next();
+      break;
+    case KeyWords::_else:
+      it->down();
+      break;
+    default:
+      break;
+    }
+
+    //значит, функция write, read, writeln :=
+    //:= точно бинарная
+    //read - точно унарная
+    //write - неопределенная
+    if (IsFunction(postfix[i]))
+    {
+      ////////write
+      if (postfix[i] == "write")
+      {
+        vector<string> temp;
+        while (!argumets.empty())
+        {   
+          temp.push_back(argumets.pop());
+        }
+        for (size_t j = temp.size() - 1; j >= 0; j--)
+        {
+          if (tableInt->Find(temp[j]) != nullptr)
+          {
+            cout << tableInt->Find(temp[j]);
+            continue;
+          }
+          else if (tableDouble->Find(temp[j]) != nullptr)
+          {
+            cout << tableInt->Find(temp[j]);
+            continue;
+          }
+          cout << temp[j];
+        }
+      }
+      ////////read
+      else if (postfix[i] == "read")
+      {
+        if (tableInt->Find(argumets.tos()) != nullptr)
+        {
+          int variable;
+          cin >> variable;
+          tableInt->changeValue(argumets.pop(), variable);
+          break;
+        }
+        else if (tableDouble->Find(argumets.tos()) != nullptr)
+        {
+          double variable;
+          cin >> variable;
+          tableDouble->changeValue(argumets.pop(), variable);
+          break;
+        }
+        else
+          throw string("No such variable!");
+      }
+      ////////:=
+      else if (postfix[i] == ":=")
+      {
+        string expression = argumets.pop();
+        if (tableInt->Find(argumets.tos()) != nullptr)
+        {
+          int variable = *this->CalculateInt(expression);
+          tableInt->changeValue(argumets.pop(), variable);
+          break;
+        }
+        else if (tableDouble->Find(argumets.tos()) != nullptr)
+        {
+          double variable = *this->CalculateDouble(expression);
+          tableDouble->changeValue(argumets.pop(), variable);
+          break;
+        }
+        else
+          throw string("No such variable!");
+      }
+      ////////: снаружи можно установить флаг, что это блок const, чтобы при добавлении переменных указывать это.
+      else if (postfix[i] == ":")
+      {
+        if (argumets.pop() == "integer")
+        {
+          //значит, переменным присвоили значения (+3 так как после двоеточия идут 2 элемента)
+          if (postfix[i].size() == i + 3)
+          {
+            string expression = postfix[++i];
+            int variable = *this->CalculateInt(expression);
+            while (!argumets.empty())
+            {
+              tableInt->Insert(argumets.pop(), variable);
+            }
+          }
+          //переменным не присвоили значения
+          else if (postfix[i].size() == i + 1)
+          {
+            while (!argumets.empty())
+            {
+              tableInt->Insert(argumets.pop(), 0);
+            }
+          }
+          else
+            throw string("Ошибка инициализации!");
+        }
+        //переменная типа double
+        else
+        {
+          if (postfix[i].size() == i + 3)
+          {
+            string expression = postfix[++i];
+            double variable = *this->CalculateDouble(expression);
+            while (!argumets.empty())
+            {
+              tableDouble->Insert(argumets.pop(), variable);
+            }
+          }
+          //переменным не присвоили значения
+          else if (postfix[i].size() == i + 1)
+          {
+            while (!argumets.empty())
+            {
+              tableDouble->Insert(argumets.pop(), 0.0);
+            }
+          }
+          else
+            throw string("Ошибка инициализации!");
+        }
+      }
+    }
+    //Значит, переменная, кладем ее в стек
+    argumets.push(postfix[i]);
+  }
+}
+
 //
 //Polinom TPostfix::Calculate()
 //{
