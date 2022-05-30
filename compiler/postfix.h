@@ -23,8 +23,7 @@ private:
   bool IsNumber(const std::string& lexem);
   void DeleteSpaces(std::string& str);
   double Calculate();
-  KeyWords KeyWord(const std::string& str);
-  bool IsFunction(const std::string& str);
+  bool isFunction(const std::string& str);
 
 public:
   TPostfix()
@@ -45,8 +44,6 @@ public:
 
   void NewInfix(const std::string& str)
   {
-    if (BracketsCorrect(str) == false) 
-      throw std::string("BracketsError");    
     ToInfix(str);
     ToPostfix();
   }

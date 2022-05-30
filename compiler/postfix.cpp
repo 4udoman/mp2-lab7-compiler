@@ -14,7 +14,7 @@ void TPostfix::ToInfix(const std::string& str)
     elem = copyStr[i];
 
 
-    if (function.IsFunction(lexem))
+    if (function.isFunction(lexem))
     {
       infix.push_back(lexem);
       lexem = "";
@@ -105,11 +105,8 @@ inline void TPostfix::DeleteSpaces(std::string& str)
       str.erase(i, 1);
   }
 }
-KeyWords TPostfix::KeyWord(const std::string& str)
-{
-  return KeyWords::_begin;
-}
-bool TPostfix::IsFunction(const std::string& str)
+
+bool TPostfix::isFunction(const std::string& str)
 {
   return false;
 }
@@ -155,7 +152,7 @@ void TPostfix::Execute(HierarchyList::iterator* it)
     //:= точно бинарная
     //read - точно унарная
     //write - неопределенная
-    if (IsFunction(postfix[i]))
+    if (isFunction(postfix[i]))
     {
       ////////write
       if (postfix[i] == "write")

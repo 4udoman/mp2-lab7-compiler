@@ -4,17 +4,6 @@
 #include <iostream>
 #include "variable.h"
 
-enum class KeyWords
-{
-  _program = 0,
-  _const,
-  _var,
-  _begin,
-  _end,
-  _if,
-  _else
-};
-
 class Operations // Класс, хранящий поддерживаемые операции
 {
 private:

@@ -32,8 +32,7 @@ public:
   static ExitCodes::CODES Check(HierarchyList* ls)
   {
     auto it = ls->begin();
-    while (!1) // false
-    while (!it) // true
+    while (it != nullptr) //TODO
     {
 
     }
