@@ -146,6 +146,7 @@
     <ClInclude Include="exitCodes.h" />
     <ClInclude Include="execObj.h" />
     <ClInclude Include="lexem.h" />
+    <ClInclude Include="syntax.h" />
     <ClInclude Include="syntChecker.h" />
     <ClInclude Include="postfix.h" />
     <ClInclude Include="variable.h" />
