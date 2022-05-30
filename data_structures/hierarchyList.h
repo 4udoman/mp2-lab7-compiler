@@ -115,8 +115,8 @@ public:
     void up() { cur = st->tos(); st->pop(); }
     bool operator!() const { return cur != nullptr; }
     bool end() const { return cur == nullptr && st->empty(); }
-    std::string& operator*() const { return cur->data; }
-    std::string* operator->() const { return &(cur->data); }
+    std::string& operator*() { return cur->data; }
+    std::string* operator->() { return &(cur->data); }
 
     ~iterator() { delete st; }
   };

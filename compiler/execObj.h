@@ -29,7 +29,6 @@ public:
     {
       try
       {
-        postfix.NewInfix(*it);
         postfix.Execute(&it); //идем не линейно, поэтому итератор может измениться
       }
       catch (...)

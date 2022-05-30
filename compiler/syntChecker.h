@@ -32,10 +32,27 @@ public:
   static ExitCodes::CODES Check(HierarchyList* ls)
   {
     auto it = ls->begin();
-    while (it != nullptr) //TODO
+    while (!it.end())
     {
+      std::string curStr = *it;
+      std::string newStr = "";
+      for (int i = 0; i < curStr.size(); i++)
+      {
+        if (curStr[i] != ' ')
+          newStr += (char)tolower(curStr[i]);
+        else if (!newStr.empty() && newStr[newStr.size() - 1] != ' ')
+          newStr += ' ';
+      }
+
+
+
+      //if (lexem.find_first_of("0123456789") == 0 && lexem.find_first_not_of("0123456789.") != std::string::npos) // Проверка на корректность имени переменной, если это переменная
+      //{
+      //  std::string exc = "Invalid format of variable: " + lexem;
+      //  throw exc;
+      //}
+
 
     }
-
   }
 };

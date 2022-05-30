@@ -4,39 +4,32 @@
 //Инфикс для логических выражений и функций, а не для алгебраических вычислений
 void TPostfix::ToInfix(const std::string& str)
 {
-  std::string elem;
-  std::string copyStr(str);
-
-  DeleteSpaces(copyStr);
-  for (int i = 0; i < copyStr.size();)
+  for (int i = 0; i < str.size();)
   {
+    std::string elem;
     std::string lexem;
-    elem = copyStr[i];
+    elem = str[i];
 
-
-    if (function.isFunction(lexem))
+    if (operation.isOperation(elem))
     {
-      infix.push_back(lexem);
-      lexem = "";
-      while (copyStr[i] != ';')
+      lexem = (char)tolower(elem[0]);
+      i++;
+    }
+    else
+    {
+      while (!operation.isOperation(elem) && i < str.size())
       {
-
+        if (elem != " ")
+          lexem += (char)tolower(elem[0]);
+        elem = str[++i];
       }
     }
-    //if (operation.IsOperation(elem))
-    //{
 
-    //}
+    if ((lexem == "-") && (infix.size() == 0 || (infix.size() > 0 && infix[infix.size() - 1] == "("))) // Превращение унарного минуса в бинарный
+      infix.push_back("0");
 
-    //if ((lexem == "-") && (infix.size() == 0 || (infix.size() > 0 && infix[infix.size() - 1] == "("))) // Превращение унарного минуса в бинарный
-    //  infix.push_back("0");
-    ////проверка на правильность введенной переменной
-    //if (lexem.find_first_of("0123456789") == 0 && lexem.find_first_not_of("0123456789.") != std::string::npos) {// Проверка на корректность имени переменной, если это переменная
-    //  std::string exc = "Invalid format of variable: " + lexem;
-    //  throw exc;
-    //}
-    //if (lexem.size() != 0)
-    //  infix.push_back(lexem);
+    if (lexem.size() != 0)
+      infix.push_back(lexem);
   }
 }
 
@@ -84,13 +77,6 @@ void TPostfix::ToInfix(const std::string& str)
 //    postfix.push_back(opStack.pop());
 //}
 //
-//bool TPostfix::IsMonom(const std::string& lexem)
-//{
-//  if (lexem.find_first_of("xyz") != std::string::npos && lexem.find_first_not_of("xyz0123456789.") == std::string::npos)
-//    return true;
-//  return false;
-//}
-//
 //bool TPostfix::IsNumber(const std::string& lexem)
 //{
 //  if (lexem.find_first_not_of("1234567890.") != std::string::npos)
@@ -98,13 +84,6 @@ void TPostfix::ToInfix(const std::string& str)
 //  return true;
 //}
 //
-inline void TPostfix::DeleteSpaces(std::string& str)
-{
-  for (size_t i = 0; i < str.size(); i++) {
-    if (str[i] == ' ')
-      str.erase(i, 1);
-  }
-}
 
 bool TPostfix::isFunction(const std::string& str)
 {
@@ -115,6 +94,19 @@ bool TPostfix::isFunction(const std::string& str)
 void TPostfix::Execute(HierarchyList::iterator* it)
 {
   TStack<std::string> argumets;
+
+
+
+
+  // Добавить вызов ToPostfix
+  // Полагаю, что можно удалить следующие части проги:
+  // std::vector<std::string> infix - получать его только при вызове toPostfix()
+  // std::string GetStringInfix() - нет смысла выводить текущий инфикс, мы храним его в иерарх. списке
+
+
+
+
+
   for (size_t i = 0; i < postfix.size(); i++)
   {
     std::string tmp = postfix[i];

@@ -9,44 +9,25 @@
 class TPostfix {
 private:
   Operations operation;
-  UnsortListTable<std::string, int>* tableInt;
-  UnsortListTable<std::string, double>* tableDouble;
+  UnsortListTable<std::string, Variable>* table;
   std::vector<std::string> infix;
   std::vector<std::string> postfix;
 
   TPostfix(const TPostfix&) = delete; // Запрет на копирование
   void operator=(const TPostfix&) = delete; // Запрет на присваивание
-  bool BracketsCorrect(const std::string& str) const; // Проверка на корректность раставления скобок в полученной на вход строке
+
   void ToInfix(const std::string& str);
-  void ToInfixCalc(const std::string& str);// Преобразование полученной строки в vector<string> infix
+  void ToInfixCalc(const std::string& str); // Преобразование полученной строки в vector<string> infix
   void ToPostfix(); // Преобразование infix в vector<string> postfix
   bool IsNumber(const std::string& lexem);
-  void DeleteSpaces(std::string& str);
   double Calculate();
   bool isFunction(const std::string& str);
 
 public:
-  TPostfix()
-  {
+  TPostfix() { table = nullptr; }
+  TPostfix(UnsortListTable<std::string, Variable>* _table) { table = _table; }
 
-  }
-  TPostfix(UnsortListTable<std::string, int>* _tableInt, UnsortListTable<std::string, double>* _tableDouble)
-  {
-    tableInt = _tableInt;
-    tableDouble = _tableDouble;
-  }
-
-  void Init(UnsortListTable<std::string, int>* _tableInt, UnsortListTable<std::string, double>* _tableDouble)
-  {
-    tableInt = _tableInt;
-    tableDouble = _tableDouble;
-  }
-
-  void NewInfix(const std::string& str)
-  {
-    ToInfix(str);
-    ToPostfix();
-  }
+  void Init(UnsortListTable<std::string, Variable>* _table) { table = _table; }
 
   std::vector<std::string> GetInfix() const { return infix; }
   std::vector<std::string> GetPostfix() const { return postfix; }
