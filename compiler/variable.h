@@ -1,4 +1,5 @@
 #pragma once
+#include <string>
 
 struct Variable {
 	union data {
@@ -11,6 +12,10 @@ struct Variable {
 	Variable(bool type):isInt(type){}
 	Variable(double ff) :isInt(0) { val.f = ff; }
 	Variable(int ii) :isInt(1) { val.i = ii; }
+	Variable(std::string s) {
+		try { int i = stoi(s); isInt = 1; val.i = i; }
+		catch (...) { isInt = 0; val.f = stod(s); }
+	}
 
 	Variable operator+(const Variable& v) {
 		if (isInt && v.isInt)
