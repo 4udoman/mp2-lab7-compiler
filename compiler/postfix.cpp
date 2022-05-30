@@ -1,6 +1,7 @@
 #include "postfix.h"
-//
-bool TPostfix::BracketsCorrect(const string& str) const
+#include "syntax.h"
+
+bool TPostfix::BracketsCorrect(const std::string& str) const
 {
   TStack<bool> stack; // Стек для проверки наличия '('
   for (const char& elem : str) {
@@ -21,15 +22,15 @@ bool TPostfix::BracketsCorrect(const string& str) const
 }
 
 //Инфикс для логических выражений и функций, а не для алгебраических вычислений
-void TPostfix::ToInfix(const string& str)
+void TPostfix::ToInfix(const std::string& str)
 {
-  string elem;
-  string copyStr(str);
+  std::string elem;
+  std::string copyStr(str);
 
   DeleteSpaces(copyStr);
   for (int i = 0; i < copyStr.size();)
   {
-    string lexem;
+    std::string lexem;
     elem = copyStr[i];
 
 
@@ -50,7 +51,7 @@ void TPostfix::ToInfix(const string& str)
     //if ((lexem == "-") && (infix.size() == 0 || (infix.size() > 0 && infix[infix.size() - 1] == "("))) // Превращение унарного минуса в бинарный
     //  infix.push_back("0");
     ////проверка на правильность введенной переменной
-    //if (lexem.find_first_of("0123456789") == 0 && lexem.find_first_not_of("0123456789.") != string::npos) {// Проверка на корректность имени переменной, если это переменная
+    //if (lexem.find_first_of("0123456789") == 0 && lexem.find_first_not_of("0123456789.") != std::string::npos) {// Проверка на корректность имени переменной, если это переменная
     //  std::string exc = "Invalid format of variable: " + lexem;
     //  throw exc;
     //}
@@ -64,7 +65,7 @@ void TPostfix::ToInfix(const string& str)
 //  TStack<string> opStack;
 //
 //  for (int i = 0; i < infix.size(); i++) {
-//    string lexem = infix[i];
+//    std::string lexem = infix[i];
 //    if (!operation.IsOperation(lexem)) {
 //      //перед нами лексема
 //      postfix.push_back(lexem);
@@ -103,16 +104,16 @@ void TPostfix::ToInfix(const string& str)
 //    postfix.push_back(opStack.pop());
 //}
 //
-//bool TPostfix::IsMonom(const string& lexem)
+//bool TPostfix::IsMonom(const std::string& lexem)
 //{
-//  if (lexem.find_first_of("xyz") != string::npos && lexem.find_first_not_of("xyz0123456789.") == string::npos)
+//  if (lexem.find_first_of("xyz") != std::string::npos && lexem.find_first_not_of("xyz0123456789.") == std::string::npos)
 //    return true;
 //  return false;
 //}
 //
-//bool TPostfix::IsNumber(const string& lexem)
+//bool TPostfix::IsNumber(const std::string& lexem)
 //{
-//  if (lexem.find_first_not_of("1234567890.") != string::npos)
+//  if (lexem.find_first_not_of("1234567890.") != std::string::npos)
 //    return false;
 //  return true;
 //}
@@ -124,11 +125,11 @@ inline void TPostfix::DeleteSpaces(string& str)
       str.erase(i, 1);
   }
 }
-KeyWords TPostfix::KeyWord(const string& str)
+KeyWords TPostfix::KeyWord(const std::string& str)
 {
   return KeyWords::begin;
 }
-bool TPostfix::IsFunction(const string& str)
+bool TPostfix::IsFunction(const std::string& str)
 {
   return false;
 }
@@ -217,12 +218,12 @@ void TPostfix::Execute(HierarchyList::iterator* it)
           break;
         }
         else
-          throw string("No such variable!");
+          throw std::string("No such variable!");
       }
       ////////:=
       else if (postfix[i] == ":=")
       {
-        string expression = argumets.pop();
+        std::string expression = argumets.pop();
         if (tableInt->Find(argumets.tos()) != nullptr)
         {
           int variable = *this->CalculateInt(expression);
@@ -236,7 +237,7 @@ void TPostfix::Execute(HierarchyList::iterator* it)
           break;
         }
         else
-          throw string("No such variable!");
+          throw std::string("No such variable!");
       }
       ////////: снаружи можно установить флаг, что это блок const, чтобы при добавлении переменных указывать это.
       else if (postfix[i] == ":")
@@ -246,7 +247,7 @@ void TPostfix::Execute(HierarchyList::iterator* it)
           //значит, переменным присвоили значения (+3 так как после двоеточия идут 2 элемента)
           if (postfix[i].size() == i + 3)
           {
-            string expression = postfix[++i];
+            std::string expression = postfix[++i];
             int variable = *this->CalculateInt(expression);
             while (!argumets.empty())
             {
@@ -262,14 +263,14 @@ void TPostfix::Execute(HierarchyList::iterator* it)
             }
           }
           else
-            throw string("Ошибка инициализации!");
+            throw std::string("Ошибка инициализации!");
         }
         //переменная типа double
         else
         {
           if (postfix[i].size() == i + 3)
           {
-            string expression = postfix[++i];
+            std::string expression = postfix[++i];
             double variable = *this->CalculateDouble(expression);
             while (!argumets.empty())
             {
@@ -285,7 +286,7 @@ void TPostfix::Execute(HierarchyList::iterator* it)
             }
           }
           else
-            throw string("Ошибка инициализации!");
+            throw std::string("Ошибка инициализации!");
         }
       }
     }

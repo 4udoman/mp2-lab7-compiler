@@ -4,16 +4,15 @@
 struct Variable
 {
 public:
-  union Var
+  union Data
   {
-    double d;
     int i;
+    double d;
   };
-  Var v;
-  bool type; // false == int, true == double
+  Data val;
+  bool isInt; // true == int, false == double
 
   bool operator==(const Variable& var) const;
-  bool operator!=(const Variable& var) const;
   bool operator<(const Variable& var) const;
   bool operator>(const Variable& var) const;
   bool operator<=(const Variable& var) const;

@@ -4,7 +4,7 @@
 #include "syntChecker.h"
 #include "execObj.h"
 #include "unsortListTable.h"
-
+/*
 class RuntimeEnv
 {
 private:
@@ -59,3 +59,4 @@ public:
   }
   ~RuntimeEnv() {}
 };
+*/

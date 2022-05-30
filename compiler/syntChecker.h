@@ -4,8 +4,18 @@
 
 class SyntChecker
 {
+private:
+  SyntChecker() = delete;
+  ~SyntChecker() = delete;
+
 public:
-  SyntChecker() {}
-  static ExitCodes::CODES Check(HierarchyList* hl) {}
-  ~SyntChecker() {}
+  static ExitCodes::CODES Check(HierarchyList* ls)
+  {
+    auto it = ls->begin();
+    while ((*it) != "end.")
+    {
+
+    }
+
+  }
 };

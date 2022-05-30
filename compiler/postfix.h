@@ -13,6 +13,7 @@ private:
   UnsortListTable<std::string, double>* tableDouble;
   std::vector<std::string> infix;
   std::vector<std::string> postfix;
+
   TPostfix(const TPostfix&) = delete; // Запрет на копирование
   void operator=(const TPostfix&) = delete; // Запрет на присваивание
   bool BracketsCorrect(const std::string& str) const; // Проверка на корректность раставления скобок в полученной на вход строке
@@ -22,8 +23,8 @@ private:
   bool IsNumber(const std::string& lexem);
   void DeleteSpaces(std::string& str);
   double Calculate();
-  KeyWords KeyWord(const string& str);
-  bool IsFunction(const string& str);
+  KeyWords KeyWord(const std::string& str);
+  bool IsFunction(const std::string& str);
 
 public:
   TPostfix()
@@ -42,10 +43,10 @@ public:
     tableDouble = _tableDouble;
   }
 
-  void NewInfix(const string& str)
+  void NewInfix(const std::string& str)
   {
     if (BracketsCorrect(str) == false) 
-      throw string("BracketsError");    
+      throw std::string("BracketsError");    
     ToInfix(str);
     ToPostfix();
   }
