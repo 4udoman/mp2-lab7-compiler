@@ -8,18 +8,14 @@ class ExecObj
 {
 private:
   HierarchyList* ls;
-  UnsortListTable<std::string, int>* tableInt; // TODO
-  UnsortListTable<std::string, double>* tableDouble; // TODO
+  UnsortListTable<std::string, Variable>* table; // TODO
   TPostfix postfix;
 public:
-  ExecObj(HierarchyList* _ls, UnsortListTable<std::string, int>* _tableInt,
-    UnsortListTable<std::string, double>* _tableDouble)
+  ExecObj(HierarchyList* _ls, UnsortListTable<std::string, Variable>* _table)
   {
     ls = _ls;
-    tableInt = _tableInt;
-    tableDouble = _tableDouble;
-    postfix.Init(tableInt, tableDouble);
-
+    table = _table;
+    postfix.Init(_table);
   }
 
   ExitCodes::CODES Execute()

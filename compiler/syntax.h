@@ -10,27 +10,27 @@ private:
   std::map<std::string, std::vector<int>> ops; // string - name of operation; vector<int> - priority, arity; ops - OPerationS
 public:
   Operations() { // ѕри добавлении операции в конструктор, об€зательно нужно реализовать логику этой операции в Calc и добавить наименование в static string str_op()
-    ops.emplace("*", std::vector<int>{ 2, 2 });
-    ops.emplace("mod", std::vector<int>{ 2, 2 });
-    ops.emplace("div", std::vector<int>{ 2, 2 });
-    ops.emplace("+", std::vector<int>{ 1, 2 });
-    ops.emplace("-", std::vector<int>{ 1, 2 });
+    ops.emplace("*", std::vector<int>{ 4, 2 });
+    ops.emplace("mod", std::vector<int>{ 4, 2 });
+    ops.emplace("div", std::vector<int>{ 4, 2 });
+    ops.emplace("+", std::vector<int>{ 3, 2 });
+    ops.emplace("-", std::vector<int>{ 3, 2 });
     ops.emplace("(", std::vector<int>{ 0, 0 });
     ops.emplace(")", std::vector<int>{ 0, 0 });
 
-    ops.emplace(":=", std::vector<int>{ -1, -1 });
-    ops.emplace("=", std::vector<int>{ -1, -1 });
-    ops.emplace("<", std::vector<int>{ -1, -1 });
-    ops.emplace(">", std::vector<int>{ -1, -1 });
-    ops.emplace("<=", std::vector<int>{ -1, -1 });
-    ops.emplace(">=", std::vector<int>{ -1, -1 });
-    ops.emplace("write", std::vector<int>{ -1, -1 });
-    ops.emplace("writeln", std::vector<int>{ -1, -1 });
-    ops.emplace("read", std::vector<int>{ -1, -1 });
-    ops.emplace("if", std::vector<int>{ -1, -1 });
+    ops.emplace(":=", std::vector<int>{ 1, 2 });
+    ops.emplace("=", std::vector<int>{ 1, 2 });
+    ops.emplace("<", std::vector<int>{ 1, 2 });
+    ops.emplace(">", std::vector<int>{ 1, 2 });
+    ops.emplace("<=", std::vector<int>{ 1, -1 });
+    ops.emplace(">=", std::vector<int>{ 1, -1 });
+    ops.emplace("write", std::vector<int>{ 2, -1 });
+    ops.emplace("writeln", std::vector<int>{ 2, -1 });
+    ops.emplace("read", std::vector<int>{ 2, -1 });
+    ops.emplace("if", std::vector<int>{ 0, 1 });
     ops.emplace("then", std::vector<int>{ -1, -1 });
-    ops.emplace("begin", std::vector<int>{ -1, -1 });
-    ops.emplace("end", std::vector<int>{ -1, -1 });
+    ops.emplace("begin", std::vector<int>{ 0, 0 });
+    ops.emplace("end", std::vector<int>{ 0, 0 });
   }
 
   static std::string str_op() { return std::string("*, +, -, (, ), mod, div"); }
@@ -48,7 +48,9 @@ public:
 
   int getArity(const std::string& elem) { return ops[elem][1]; } // ѕолучить арность у заданной операции, контроль использовани€ за программистом 
 
-  Variable Calc(const std::string& elem, Variable left, Variable right = Variable()) {// ¬ычислить
+  Variable Calc(const std::string& elem, Variable left, Variable right) 
+  {
+    // ¬ычислить
     if (elem == "*")
       return left * right;
     if (elem == "+")

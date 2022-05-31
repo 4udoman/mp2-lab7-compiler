@@ -33,6 +33,57 @@ void TPostfix::ToInfix(const std::string& str)
   }
 }
 
+void TPostfix::ToPostfix()
+{
+  TStack<std::string> opStack;
+  
+    for (int i = 0; i < infix.size(); i++) {
+      std::string lexem = infix[i];
+      if (!operation.isOperation(lexem)) {
+        //перед нами лексема
+        if (lexem == "," || ";")
+          continue;
+        postfix.push_back(lexem);
+        continue;
+      }
+      else {
+        if (lexem == "(") {
+          opStack.push(lexem);
+          continue;
+        }
+  
+        if (lexem == ")") {
+          //Заполняем постфикс всеми лексемами между ()
+          while (opStack.tos() != "(")
+            postfix.push_back(opStack.pop());
+          opStack.pop();
+          continue;
+        }
+        //Пока на вершине стека находится операция с большим приоритетом, чем текущая добавляем в постфикс
+        while (!opStack.empty() && operation.getPriority(opStack.tos()) >= operation.getPriority(lexem))
+          postfix.push_back(opStack.pop());
+  
+        if (opStack.empty()) {
+          opStack.push(lexem);
+          continue;
+        }
+        else {
+          if (operation.getPriority(opStack.tos()) < operation.getPriority(lexem)) {
+            opStack.push(lexem);
+            continue;
+          }
+        }
+      }
+    }
+    while (!opStack.empty())
+      postfix.push_back(opStack.pop());
+}
+
+bool TPostfix::IsNumber(const std::string& lexem)
+{
+  return false;
+}
+
 //void TPostfix::ToPostfix()
 //{
 //  TStack<string> opStack;
@@ -85,17 +136,21 @@ void TPostfix::ToInfix(const std::string& str)
 //}
 //
 
-bool TPostfix::isFunction(const std::string& str)
-{
-  return false;
-}
-
 //Здесь выполняются функции, а также переставляется итератор
 void TPostfix::Execute(HierarchyList::iterator* it)
 {
-  TStack<std::string> argumets;
-
-
+  if (!it) //nullptr
+  {
+    it->up();
+    it->next();
+  }
+  
+  TStack<Variable> algArguments;
+  TStack<std::string> strArguments;
+  infix.clear();
+  ToInfix(**it);
+  postfix.clear();
+  ToPostfix();
 
 
   // Добавить вызов ToPostfix
@@ -104,171 +159,224 @@ void TPostfix::Execute(HierarchyList::iterator* it)
   // std::string GetStringInfix() - нет смысла выводить текущий инфикс, мы храним его в иерарх. списке
 
 
-
-
-
   for (size_t i = 0; i < postfix.size(); i++)
   {
     std::string tmp = postfix[i];
     if (tmp == "program")
     {
       it->next();
+      break;
     }
     else if (tmp == "const")
     {
-      it->down();
+      UpdateTable(*it);
+      it->next();
+      break;
     }
     else if (tmp == "var")
     {
-      it->down();
+      UpdateTable(*it);
+      it->next();
+      break;
     }
     else if (tmp == "begin")
     {
       it->down();
+      break;
     }
     else if (tmp == "end")
     {
-      it->up();
       it->next();
+      break;
     }
     else if (tmp == "if")
     {
-      if (CalculateIf(argumets.pop()))
+      if (algArguments.pop().val.i)
+      {
+        logicBlock.push(true);
         it->down();
+        if (!it) // it == nullptr Вывод о том, что есть begin
+        {
+          it->next(); //перейдем в begin
+        }
+      }
       else
-        it->next();
-      break;
+      {
+        logicBlock.push(false);
+        if (!it) // it == nullptr Вывод о том, что есть begin
+        {
+          it->Next(2); //пропускаем begin
+        }
+        else
+          it->next();
+      }
     }
     else if (tmp == "else")
     {
-      it->down();
+      if (lastCompare == false)
+      {
+
+      }
       break;
     }
-  }
-
-  //значит, функция write, read, writeln :=
-  //:= точно бинарная
-  //read - точно унарная
-  //write - неопределенная
-  if (isFunction(postfix[i]))
-  {
-    ////////write
-    if (postfix[i] == "write")
+    else if (tmp == "write")
     {
-      std::vector<std::string> temp;
-      while (!argumets.empty())
+      //чтобы не заниматься такой дичью, проще перегрузить оператор вывода для variable.
+      if (strArguments.empty())
       {
-        temp.push_back(argumets.pop());
-      }
-      for (size_t j = temp.size() - 1; j >= 0; j--)
+        if (algArguments.empty())
+          throw std::string("Недостаточно аргументов для вызова функции!");
+        if (algArguments.tos().isInt)
+          std::cout << algArguments.pop().val.i;
+        else
+          std::cout << algArguments.pop().val.d;
+      }   
+      else
       {
-        if (tableInt->Find(temp[j]) != nullptr)
-        {
-          std::cout << tableInt->Find(temp[j]);
+        std::cout << strArguments.pop();
+        if (algArguments.empty())
           continue;
-        }
-        else if (tableDouble->Find(temp[j]) != nullptr)
+        else
         {
-          std::cout << tableInt->Find(temp[j]);
-          continue;
+          if (algArguments.tos().isInt)
+            std::cout << algArguments.pop().val.i;
+          else
+            std::cout << algArguments.pop().val.d;
         }
-        std::cout << temp[j];
-      }
+      }        
     }
-    ////////read
-    else if (postfix[i] == "read")
+    else if (tmp == "writeln")
     {
-      if (tableInt->Find(argumets.tos()) != nullptr)
+      //вызвать write
+      std::cout << std::endl;
+    }
+    else if (tmp == "read")
+    {
+      Variable* v = &algArguments.pop();
+      if (v->isInt)
       {
         int variable;
         std::cin >> variable;
-        tableInt->changeValue(argumets.pop(), variable);
-        break;
+        *v = variable;
       }
-      else if (tableDouble->Find(argumets.tos()) != nullptr)
+      else
       {
         double variable;
         std::cin >> variable;
-        tableDouble->changeValue(argumets.pop(), variable);
-        break;
+        *v = variable;
       }
-      else
-        throw std::string("No such variable!");
     }
-    ////////:=
-    else if (postfix[i] == ":=")
+    else if (tmp == ":=")
     {
-      std::string expression = argumets.pop();
-      if (tableInt->Find(argumets.tos()) != nullptr)
-      {
-        int variable = *this->CalculateInt(expression);
-        tableInt->changeValue(argumets.pop(), variable);
-        break;
-      }
-      else if (tableDouble->Find(argumets.tos()) != nullptr)
-      {
-        double variable = *this->CalculateDouble(expression);
-        tableDouble->changeValue(argumets.pop(), variable);
-        break;
-      }
-      else
-        throw std::string("No such variable!");
+      Variable* right = &algArguments.pop();
+      Variable left = algArguments.pop();
+      *right = left;
     }
-    ////////: снаружи можно установить флаг, что это блок const, чтобы при добавлении переменных указывать это.
-    else if (postfix[i] == ":")
+    else if (tmp == "=")
     {
-      if (argumets.pop() == "integer")
+      Variable right = algArguments.pop();
+      Variable left = algArguments.pop();
+      if (left == right)
+        algArguments.push(Variable(1));
+      else
+        algArguments.push(Variable(0));
+    }
+    else if (tmp[0] == '\'')
+    {
+      int j = 1;
+      std::string str;
+      while (tmp[j] != '\'')
       {
-        //значит, переменным присвоили значения (+3 так как после двоеточия идут 2 элемента)
-        if (postfix[i].size() == i + 3)
+        str += tmp[j];
+        j++;
+      }
+      strArguments.push(str);
+      continue;
+    }
+    //Нужно добавить фунцию, которая скажет, операция это или нет
+    else if (tmp == "Операция(как алгебраическая так и логическая)")
+    {
+      Variable right = algArguments.pop();
+      Variable left = algArguments.pop();
+      algArguments.push(operation.Calc(tmp, left, right));
+    }
+    //если ничего из этого, то это переменная либо число
+    else
+    {
+      if (IsNumber(tmp))
+      {
+        algArguments.push(&Variable(tmp));
+      }
+      //значит, переменная
+      else
+      {
+        algArguments.push(table->Find(tmp));
+      }
+    }
+  } 
+}
+ 
+void TPostfix::UpdateTable(HierarchyList::iterator it)
+{
+  //Должен работать до тех пор, пока не конец блока
+  while (!it)
+  {
+    infix.clear();
+    postfix.clear();
+    ToInfix(*it);
+    ToPostfix();
+    TStack<std::string> lexems;
+    TStack<Variable> algArguments;
+    for (size_t i = 0; i < postfix.size(); i++)
+    {
+      if (IsNumber(postfix[i]))
+      {
+        algArguments.push(Variable(postfix[i]));
+        continue;
+      }
+      else if (postfix[i] == ":")
+      {
+        std::string type = lexems.pop();
+        if (type == "int")
         {
-          std::string expression = postfix[++i];
-          int variable = *this->CalculateInt(expression);
-          while (!argumets.empty())
+          if (algArguments.empty())
           {
-            tableInt->Insert(argumets.pop(), variable);
+            while (!lexems.empty())
+              table->changeValue(lexems.pop(), Variable(INT_MAX));
+          }
+          else
+          {
+            Variable value(algArguments.pop());
+            while (!lexems.empty())
+              table->changeValue(lexems.pop(), value);
           }
         }
-        //переменным не присвоили значения
-        else if (postfix[i].size() == i + 1)
+        else if (type == "double")
         {
-          while (!argumets.empty())
+          if (algArguments.empty())
           {
-            tableInt->Insert(argumets.pop(), 0);
+            while (!lexems.empty())
+              table->changeValue(lexems.pop(), Variable(DBL_MAX));
+          }
+          else
+          {
+            Variable value(algArguments.pop());
+            while (!lexems.empty())
+              table->changeValue(lexems.pop(), value);
           }
         }
         else
-          throw std::string("Ошибка инициализации!");
+          throw std::string("Unexpected type");
       }
-      //переменная типа double
+      else if (postfix[i] == "=")
+        continue;
       else
-      {
-        if (postfix[i].size() == i + 3)
-        {
-          std::string expression = postfix[++i];
-          double variable = *this->CalculateDouble(expression);
-          while (!argumets.empty())
-          {
-            tableDouble->Insert(argumets.pop(), variable);
-          }
-        }
-        //переменным не присвоили значения
-        else if (postfix[i].size() == i + 1)
-        {
-          while (!argumets.empty())
-          {
-            tableDouble->Insert(argumets.pop(), 0.0);
-          }
-        }
-        else
-          throw std::string("Ошибка инициализации!");
-      }
+        lexems.push(postfix[i]);
     }
+    it.next();
   }
-  //Значит, переменная, кладем ее в стек
-  argumets.push(postfix[i]);
 }
-}
+
 
 //
 //Polinom TPostfix::Calculate()
