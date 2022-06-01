@@ -48,19 +48,70 @@ public:
 
   int getArity(const std::string& elem) { return ops[elem][1]; } // Получить арность у заданной операции, контроль использования за программистом 
 
-  Variable Calc(const std::string& elem, Variable left, Variable right) 
+  Variable* Calc(const std::string& elem, Variable left, Variable right)
   {
-    // Вычислить
+
     if (elem == "*")
-      return left * right;
+    {
+      Variable var(left * right);
+      return &var;
+    } 
     if (elem == "+")
-      return left + right;
+    {
+      Variable var(left + right);
+      return &var;
+    }
     if (elem == "-")
-      return left - right;
+    {
+      Variable var(left - right);
+      return &var;
+    }
     if (elem == "mod")
-      return left % right;
+    {
+      Variable var(left % right);
+      return &var;
+    }
     if (elem == "div")
-      return left / right;
+    {
+      Variable var(left / right);
+      return &var;
+    }
+    if (elem == "=")
+    {
+      Variable var(left == right);
+      return &var;
+    }
+    if (elem == ">")
+    {
+      Variable var(left > right);
+      return &var;
+    }
+    if (elem == "<")
+    {
+      Variable var(left < right);
+      return &var;
+    }
   }
 
+  bool IsMathOperation(const std::string op)
+  {
+    if (op == "*")
+      return true;
+    if (op == "+")
+      return true;
+    if (op == "-")
+      return true;
+    if (op == "mod")
+      return true;
+    if (op == "div")
+      return true;
+    if (op == "=")
+      return true;
+    if (op == ">")
+      return true;
+    if (op == "<")
+      return true;
+
+    return false;
+  }
 };

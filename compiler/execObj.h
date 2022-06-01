@@ -17,8 +17,8 @@ public:
     table = _table;
     postfix.Init(_table);
   }
-
-  ExitCodes::CODES Execute()
+  
+  void Execute()
   {
     auto it = ls->begin();
     while ((*it) != "end.")
@@ -29,10 +29,11 @@ public:
       }
       catch (...)
       {
-        std::cout << "Error";
+      
       }
     }
 
   }
+
   ~ExecObj() {}
 };

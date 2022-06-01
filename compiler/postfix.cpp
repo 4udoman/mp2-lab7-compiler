@@ -1,6 +1,7 @@
 #include "postfix.h"
 #include "syntax.h"
 
+
 //Инфикс для логических выражений и функций, а не для алгебраических вычислений
 void TPostfix::ToInfix(const std::string& str)
 {
@@ -81,7 +82,9 @@ void TPostfix::ToPostfix()
 
 bool TPostfix::IsNumber(const std::string& lexem)
 {
-  return false;
+  if (lexem.find_first_not_of("0123456789") != std::string::npos)
+    return false;
+  return true;
 }
 
 //void TPostfix::ToPostfix()
@@ -142,10 +145,10 @@ void TPostfix::Execute(HierarchyList::iterator* it)
   if (!it) //nullptr
   {
     it->up();
+    lastCompare = logicBlock.pop();
     it->next();
   }
-  
-  TStack<Variable> algArguments;
+  TStack<Variable*> algArguments;
   TStack<std::string> strArguments;
   infix.clear();
   ToInfix(**it);
@@ -191,7 +194,7 @@ void TPostfix::Execute(HierarchyList::iterator* it)
     }
     else if (tmp == "if")
     {
-      if (algArguments.pop().val.i)
+      if (algArguments.pop()->val.i)
       {
         logicBlock.push(true);
         it->down();
@@ -215,9 +218,12 @@ void TPostfix::Execute(HierarchyList::iterator* it)
     {
       if (lastCompare == false)
       {
-
+        it->down();
+        if (!it) // it == nullptr Вывод о том, что есть begin
+        {
+          it->next(); //перейдем в begin
+        }
       }
-      break;
     }
     else if (tmp == "write")
     {
@@ -226,10 +232,7 @@ void TPostfix::Execute(HierarchyList::iterator* it)
       {
         if (algArguments.empty())
           throw std::string("Недостаточно аргументов для вызова функции!");
-        if (algArguments.tos().isInt)
-          std::cout << algArguments.pop().val.i;
-        else
-          std::cout << algArguments.pop().val.d;
+        std::cout << algArguments.pop();
       }   
       else
       {
@@ -238,49 +241,45 @@ void TPostfix::Execute(HierarchyList::iterator* it)
           continue;
         else
         {
-          if (algArguments.tos().isInt)
-            std::cout << algArguments.pop().val.i;
-          else
-            std::cout << algArguments.pop().val.d;
+          std::cout << algArguments.pop();
         }
       }        
     }
     else if (tmp == "writeln")
     {
-      //вызвать write
-      std::cout << std::endl;
+      if (strArguments.empty())
+      {
+        if (algArguments.empty())
+          throw std::string("Недостаточно аргументов для вызова функции!");
+        std::cout << *algArguments.pop();
+      }
+      else
+      {
+        std::cout << strArguments.pop();
+        if (algArguments.empty())
+        {
+          std::cout << std::endl;
+          continue;
+        }
+        else
+        {
+          std::cout << *algArguments.pop();
+        }
+        std::cout << std::endl;
+      }
     }
     else if (tmp == "read")
     {
-      Variable* v = &algArguments.pop();
-      if (v->isInt)
-      {
-        int variable;
-        std::cin >> variable;
-        *v = variable;
-      }
-      else
-      {
-        double variable;
-        std::cin >> variable;
-        *v = variable;
-      }
+      Variable* v = algArguments.pop();
+      std::cin >> *v;
     }
     else if (tmp == ":=")
     {
-      Variable* right = &algArguments.pop();
+      Variable* right = algArguments.pop();
       Variable left = algArguments.pop();
       *right = left;
     }
-    else if (tmp == "=")
-    {
-      Variable right = algArguments.pop();
-      Variable left = algArguments.pop();
-      if (left == right)
-        algArguments.push(Variable(1));
-      else
-        algArguments.push(Variable(0));
-    }
+    //строковый аргмент внутри write
     else if (tmp[0] == '\'')
     {
       int j = 1;
@@ -293,8 +292,7 @@ void TPostfix::Execute(HierarchyList::iterator* it)
       strArguments.push(str);
       continue;
     }
-    //Нужно добавить фунцию, которая скажет, операция это или нет
-    else if (tmp == "Операция(как алгебраическая так и логическая)")
+    else if (operation.IsMathOperation(tmp))
     {
       Variable right = algArguments.pop();
       Variable left = algArguments.pop();
@@ -305,12 +303,16 @@ void TPostfix::Execute(HierarchyList::iterator* it)
     {
       if (IsNumber(tmp))
       {
-        algArguments.push(&Variable(tmp));
+        Variable var(tmp);
+        algArguments.push(&var);
       }
       //значит, переменная
       else
       {
-        algArguments.push(table->Find(tmp));
+        Variable* variable = table->Find(tmp);
+        if (variable == nullptr)
+          throw std::string("No such variable!");
+        algArguments.push(variable);
       }
     }
   } 
