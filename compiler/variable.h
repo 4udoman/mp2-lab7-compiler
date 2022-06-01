@@ -9,6 +9,7 @@ struct Variable {
   data val;
   bool isInt;
 
+  Variable(){}
   Variable(bool type) : isInt(type) {}
   Variable(double dd) :isInt(0) { val.d = dd; }
   Variable(int ii) :isInt(1) { val.i = ii; }
@@ -55,21 +56,45 @@ struct Variable {
   }
   Variable operator==(const Variable& v)
   {
-    double eps = 0.001;
     if (isInt && v.isInt)
-      if (val.i == v.val.i)
-        return Variable(1);
-      else
-        return Variable(0);
+      return Variable(int(val.i == v.val.i));
+    if (!isInt && !v.isInt)
+      return Variable(int(val.d == v.val.d));
+    if(isInt)
+      return Variable(int(val.i == v.val.d));
+    return Variable(int(val.d == v.val.i));
   }
+  Variable operator!=(const Variable& v)
+  {
+    if (isInt && v.isInt)
+      return Variable(int(val.i != v.val.i));
+    if (!isInt && !v.isInt)
+      return Variable(int(val.d != v.val.d));
+    if (isInt)
+      return Variable(int(val.i != v.val.d));
+    return Variable(int(val.d != v.val.i));
+  }
+
   Variable operator>(const Variable& v)
   {
-
+    if (isInt && v.isInt)
+      return Variable(int(val.i > v.val.i));
+    if (!isInt && !v.isInt)
+      return Variable(int(val.d > v.val.d));
+    if (isInt)
+      return Variable(int(val.i > v.val.d));
+    return Variable(int(val.d > v.val.i));
   }
 
   Variable operator<(const Variable& v)
   {
-
+    if (isInt && v.isInt)
+      return Variable(int(val.i < v.val.i));
+    if (!isInt && !v.isInt)
+      return Variable(int(val.d < v.val.d));
+    if (isInt)
+      return Variable(int(val.i < v.val.d));
+    return Variable(int(val.d < v.val.i));
   }
 
   friend std::ostream& operator <<(std::ostream& os, const Variable& v) {

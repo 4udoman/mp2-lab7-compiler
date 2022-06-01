@@ -82,64 +82,13 @@ void TPostfix::ToPostfix()
 
 bool TPostfix::IsNumber(const std::string& lexem)
 {
-  if (lexem.find_first_not_of("0123456789") != std::string::npos)
+  if (lexem.find_first_not_of("1234567890.") != std::string::npos)
     return false;
   return true;
 }
 
-//void TPostfix::ToPostfix()
-//{
-//  TStack<string> opStack;
-//
-//  for (int i = 0; i < infix.size(); i++) {
-//    std::string lexem = infix[i];
-//    if (!operation.IsOperation(lexem)) {
-//      //перед нами лексема
-//      postfix.push_back(lexem);
-//      continue;
-//    }
-//    else {
-//      if (lexem == "(") {
-//        opStack.push(lexem);
-//        continue;
-//      }
-//
-//      if (lexem == ")") {
-//        //Заполняем постфикс всеми лексемами между ()
-//        while (opStack.tos() != "(")
-//          postfix.push_back(opStack.pop());
-//        opStack.pop();
-//        continue;
-//      }
-//      //Пока на вершине стека находится операция с большим приоритетом, чем текущая добавляем в постфикс
-//      while (!opStack.empty() && operation.GetPriority(opStack.tos()) >= operation.GetPriority(lexem))
-//        postfix.push_back(opStack.pop());
-//
-//      if (opStack.empty()) {
-//        opStack.push(lexem);
-//        continue;
-//      }
-//      else {
-//        if (operation.GetPriority(opStack.tos()) < operation.GetPriority(lexem)) {
-//          opStack.push(lexem);
-//          continue;
-//        }
-//      }
-//    }
-//  }
-//  while (!opStack.empty())
-//    postfix.push_back(opStack.pop());
-//}
-//
-//bool TPostfix::IsNumber(const std::string& lexem)
-//{
-//  if (lexem.find_first_not_of("1234567890.") != std::string::npos)
-//    return false;
-//  return true;
-//}
-//
 
-//Здесь выполняются функции, а также переставляется итератор
+// Здесь выполняются функции, а также переставляется итератор
 void TPostfix::Execute(HierarchyList::iterator* it)
 {
   if (!it) //nullptr
@@ -156,10 +105,10 @@ void TPostfix::Execute(HierarchyList::iterator* it)
   ToPostfix();
 
 
-  // Добавить вызов ToPostfix
-  // Полагаю, что можно удалить следующие части проги:
-  // std::vector<std::string> infix - получать его только при вызове toPostfix()
-  // std::string GetStringInfix() - нет смысла выводить текущий инфикс, мы храним его в иерарх. списке
+   //Добавить вызов ToPostfix
+   //Полагаю, что можно удалить следующие части проги:
+   //std::vector<std::string> infix - получать его только при вызове toPostfix()
+   //std::string GetStringInfix() - нет смысла выводить текущий инфикс, мы храним его в иерарх. списке
 
 
   for (size_t i = 0; i < postfix.size(); i++)
@@ -317,7 +266,7 @@ void TPostfix::Execute(HierarchyList::iterator* it)
     }
   } 
 }
- 
+
 void TPostfix::UpdateTable(HierarchyList::iterator it)
 {
   //Должен работать до тех пор, пока не конец блока
@@ -378,33 +327,3 @@ void TPostfix::UpdateTable(HierarchyList::iterator it)
     it.next();
   }
 }
-
-
-//
-//Polinom TPostfix::Calculate()
-//{
-//  TStack<Polinom> result;
-//  for (size_t i = 0; i < postfix.size(); i++) {
-//    if (operation.IsOperation(postfix[i])) {//лексема операция
-//      if (operation.GetArity(postfix[i]) == 1) {
-//        result.push(operation.Calc(postfix[i], result.pop(), result.pop()));
-//      }
-//      else if (operation.GetArity(postfix[i]) == 2) {
-//        result.push(operation.Calc(postfix[i], result.pop(), result.pop()));
-//      }
-//
-//    }
-//    else if (IsMonom(postfix[i]) || IsNumber(postfix[i])) { //лексема моном или число
-//      result.push(Polinom(postfix[i]));
-//    }
-//    else {//переменная
-//      auto p = tableManager->Find(postfix[i]);
-//      if (p == nullptr) {
-//        std::string exc = postfix[i] + " was not found";
-//        throw exc;
-//      }
-//      result.push(p->get()->getPol());
-//    }
-//  }
-//  return result.pop();
-//}

@@ -104,6 +104,7 @@ public:
     
     iterator(): st(nullptr), cur(nullptr) {}
     iterator(Node* x) : cur(x) { st = new TStack<Node*>; }
+    iterator(const HierarchyList::iterator& it):cur(it.cur) { st = new TStack<Node*>; }
     iterator& operator=(const iterator& i) {
       cur = i.cur;
       delete st;
@@ -128,6 +129,7 @@ public:
   public:
     const_iterator() : st(nullptr), cur(nullptr) {}
     const_iterator(Node* x) : cur(x) { st = new TStack<Node*>; }
+    const_iterator(const HierarchyList::const_iterator& it) :cur(it.cur) { st = new TStack<Node*>; }
     const_iterator& operator=(const const_iterator& i) {
       cur = i.cur;
       delete st;
