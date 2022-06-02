@@ -20,7 +20,7 @@ public:
   
   void Execute()
   {
-    auto it = ls->begin();
+    auto it = ls->cbegin();
     while ((*it) != "end.")
     {
       try

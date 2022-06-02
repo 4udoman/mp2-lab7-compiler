@@ -124,7 +124,7 @@ void TPostfix::Execute(HierarchyList::const_iterator* it)
         logicBlock.push(false);
         lastCompare = false;
         it->down();
-        if (!it) // it != nullptr ¬ывод о том, что из одной строчки, но должны пропустить т.к. false
+        if (!*it) // it != nullptr ¬ывод о том, что из одной строчки, но должны пропустить т.к. false
         {
           it->up();
           it->next();
@@ -144,7 +144,7 @@ void TPostfix::Execute(HierarchyList::const_iterator* it)
       if (lastCompare == false)
       {
         it->down();
-        if (!it) // it != nullptr ¬ывод о том, что из одной строки
+        if (!*it) // it != nullptr ¬ывод о том, что из одной строки
         {
           break; //перейдем в begin
         }
