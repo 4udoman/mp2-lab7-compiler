@@ -25,8 +25,6 @@ public:
     ops.emplace("=", std::vector<int>{ 1, 2 });
     ops.emplace("<", std::vector<int>{ 1, 2 });
     ops.emplace(">", std::vector<int>{ 1, 2 });
-    ops.emplace("<=", std::vector<int>{ 1, -1 });
-    ops.emplace(">=", std::vector<int>{ 1, -1 });
     ops.emplace("write", std::vector<int>{ 2, -1 });
     ops.emplace("writeln", std::vector<int>{ 2, -1 });
     ops.emplace("read", std::vector<int>{ 2, -1 });
@@ -133,8 +131,6 @@ public:
     synt.push_front("=");
     synt.push_front("<");
     synt.push_front(">");
-    synt.push_front(">=");
-    synt.push_front("<=");
     synt.push_front("write");
     synt.push_front("writeln");
     synt.push_front("read");
