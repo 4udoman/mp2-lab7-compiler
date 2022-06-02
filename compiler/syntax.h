@@ -21,6 +21,7 @@ public:
     ops.emplace(")", std::vector<int>{ 0, 0 });
 
     ops.emplace(":=", std::vector<int>{ 1, 2 });
+    ops.emplace(":", std::vector<int>{ 0, 0 });
     ops.emplace("=", std::vector<int>{ 1, 2 });
     ops.emplace("<", std::vector<int>{ 1, 2 });
     ops.emplace(">", std::vector<int>{ 1, 2 });

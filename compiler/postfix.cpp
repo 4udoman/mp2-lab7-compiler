@@ -10,6 +10,7 @@ void TPostfix::ToPostfix()
 
       if (lexem == "," || lexem == ";" || lexem == "then")
         continue;
+
       if (!operation.isOperation(lexem)) {  
         postfix.push_back(lexem);
         continue;
@@ -258,18 +259,25 @@ void TPostfix::UpdateTable(HierarchyList::iterator it)
       else if (postfix[i] == ":")
       {
         std::string type = lexems.pop();
-        if (type == "int")
+        if (type == "integer")
         {
           if (algArguments.empty())
           {
             while (!lexems.empty())
-              table->changeValue(lexems.pop(), Variable(INT_MAX));
+            {
+              std::string key = lexems.tos();
+              table->changeValue(key, Variable(INT_MAX, lexems.pop()));
+            }
+              
           }
           else
           {
             Variable value(algArguments.pop());
             while (!lexems.empty())
+            {
+              value.name = lexems.tos();
               table->changeValue(lexems.pop(), value);
+            }
           }
         }
         else if (type == "double")
@@ -277,13 +285,21 @@ void TPostfix::UpdateTable(HierarchyList::iterator it)
           if (algArguments.empty())
           {
             while (!lexems.empty())
-              table->changeValue(lexems.pop(), Variable(DBL_MAX));
+            {
+              std::string key = lexems.tos();
+              table->changeValue(key, Variable(DBL_MAX, lexems.pop()));
+            }
+              
           }
           else
           {
             Variable value(algArguments.pop());
             while (!lexems.empty())
+            {
+              value.name = lexems.tos();
               table->changeValue(lexems.pop(), value);
+            }
+              
           }
         }
         else
