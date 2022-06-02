@@ -11,7 +11,7 @@ int main()
   l.Build("program.txt");
   //std::cout << l << std::endl;
   UnsortListTable<std::string, Variable> t;
-  Variable pi("3.14");
+  Variable pi("3.14", "pi");
   t.Insert("pi", pi);
   t.Insert("numa1", Variable(0));
   t.Insert("numa2", Variable(0));

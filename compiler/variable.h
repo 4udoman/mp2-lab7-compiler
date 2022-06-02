@@ -11,11 +11,16 @@ struct Variable {
   std::string name;
 
   Variable() = default;
-  Variable(double dd, std::string = "none") :isInt(0) { val.d = dd; }
-  Variable(int ii, std::string = "none") :isInt(1) { val.i = ii; }
-  Variable(std::string s, std::string = "none") {
-    try { int i = std::stoi(s); isInt = 1; val.i = i; }
-    catch (...) { isInt = 0; val.d = std::stod(s); }
+  Variable(double dd, std::string _name = "none") :isInt(0) { val.d = dd; name = _name; }
+  Variable(int ii, std::string _name = "none") :isInt(1) { val.i = ii; name = _name; }
+  Variable(std::string s, std::string _name = "none") {
+    name = _name;
+    if (s.find('.') != std::string::npos) {
+      isInt = 0; val.d = stod(s);
+    }
+    else {
+      isInt = 1; val.i = stoi(s);
+    }
   }
 
   Variable operator+(const Variable& v) {

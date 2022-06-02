@@ -64,7 +64,7 @@ void TPostfix::Execute(HierarchyList::iterator* it)
     lastCompare = logicBlock.pop();
     it->next();
   }
-  TStack<Variable*> algArguments;
+  TStack<Variable> algArguments;
   TStack<std::string> strArguments;
 
   infix = Parser(**it);
@@ -103,7 +103,7 @@ void TPostfix::Execute(HierarchyList::iterator* it)
     }
     else if (tmp == "if")
     {
-      if (algArguments.pop()->val.i)
+      if (algArguments.pop().val.i)
       {
         logicBlock.push(true);
         it->down();
@@ -160,7 +160,7 @@ void TPostfix::Execute(HierarchyList::iterator* it)
       {
         if (algArguments.empty())
           throw std::string("Недостаточно аргументов для вызова функции!");
-        std::cout << *algArguments.pop();
+        std::cout << algArguments.pop();
       }
       else
       {
@@ -172,22 +172,28 @@ void TPostfix::Execute(HierarchyList::iterator* it)
         }
         else
         {
-          std::cout << *algArguments.pop();
+          std::cout << algArguments.pop();
         }
         std::cout << std::endl;
       }
     }
     else if (tmp == "read")
     {
-      Variable* v = algArguments.pop();
-      std::cin >> *v;
+      Variable argument = algArguments.pop();
+      Variable* tableArg = table->Find(argument.name);
+      if (tableArg == nullptr)
+        throw std::string("No such variable!");
+      std::cin >> argument;
+      *tableArg = argument;
     }
     else if (tmp == ":=")
     {
-      Variable* right = algArguments.pop();
-      //delete
+      Variable right = algArguments.pop();
       Variable left = algArguments.pop();
-      *right = left;
+      Variable* tableArg = table->Find(left.name);
+      if(tableArg == nullptr)
+        throw std::string("No such variable!");
+      *tableArg = right;
     }
     //строковый аргмент внутри write
     else if (tmp[0] == '\'')
@@ -215,8 +221,8 @@ void TPostfix::Execute(HierarchyList::iterator* it)
     {
       if (IsNumber(tmp))
       {
-        Variable var(tmp);
-        algArguments.push(&var);
+        Variable num(tmp);
+        algArguments.push(num);
       }
       //значит, переменная
       else
@@ -224,7 +230,7 @@ void TPostfix::Execute(HierarchyList::iterator* it)
         Variable* variable = table->Find(tmp);
         if (variable == nullptr)
           throw std::string("No such variable!");
-        algArguments.push(variable);
+        algArguments.push(*variable);
       }
     }
   } 
@@ -232,12 +238,13 @@ void TPostfix::Execute(HierarchyList::iterator* it)
 
 void TPostfix::UpdateTable(HierarchyList::iterator it)
 {
+  it.down();
   //Должен работать до тех пор, пока не конец блока
   while (!it)
   {
-    infix.clear();
+    
     postfix.clear();
-    ToInfix(*it);
+    infix = Parser(*it);
     ToPostfix();
     TStack<std::string> lexems;
     TStack<Variable> algArguments;

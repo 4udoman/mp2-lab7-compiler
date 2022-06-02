@@ -37,6 +37,9 @@ public:
     ops.emplace("const", std::vector<int>{ -1, -1 });
     ops.emplace("var", std::vector<int>{ -1, -1 });
     ops.emplace("end.", std::vector<int>{ -1, -1 });
+    ops.emplace("int", std::vector<int>{ -1, -1 });
+    ops.emplace("double", std::vector<int>{ -1, -1 });
+    ops.emplace(":", std::vector<int>{ -1, -1 });
   }
 
   bool isOperation(const std::string& elem) const { return ops.find(elem) != ops.end(); } // Проверка является ли данный элемент операцией, которая объявлена в классе
@@ -52,47 +55,39 @@ public:
 
   int getArity(const std::string& elem) { return ops[elem][1]; } // Получить арность у заданной операции, контроль использования за программистом 
 
-  Variable* Calc(const std::string& elem, Variable left, Variable right)
+  Variable Calc(const std::string& elem, Variable left, Variable right)
   {
     if (elem == "*")
     {
-      Variable var(left * right);
-      return &var;
+      return Variable(left * right);
     } 
     if (elem == "+")
     {
-      Variable var(left + right);
-      return &var;
+      return Variable(left + right);
     }
     if (elem == "-")
     {
-      Variable var(left - right);
-      return &var;
+      return Variable(left - right);
     }
     if (elem == "mod")
     {
-      Variable var(left % right);
-      return &var;
+      return Variable(left % right);
     }
     if (elem == "div")
     {
-      Variable var(left / right);
-      return &var;
+      return Variable(left / right);
     }
     if (elem == "=")
     {
-      Variable var(left == right);
-      return &var;
+      return Variable(left == right);
     }
     if (elem == ">")
     {
-      Variable var(left > right);
-      return &var;
+      return Variable(left > right);
     }
     if (elem == "<")
     {
-      Variable var(left < right);
-      return &var;
+      return Variable(left < right);
     }
   }
 
