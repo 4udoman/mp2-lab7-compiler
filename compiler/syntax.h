@@ -68,10 +68,14 @@ public:
     }
     if (elem == "mod")
     {
+      if (right.val.i == 0)
+        throw std::string("Деление на 0!");
       return Variable(left % right);
     }
     if (elem == "div")
     {
+      if (right.val.i == 0)
+        throw std::string("Деление на 0!");
       return Variable(left / right);
     }
     if (elem == "=")

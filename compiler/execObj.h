@@ -25,7 +25,9 @@ public:
     {
       try
       {
-        postfix.Execute(&it); //идем не линейно, поэтому итератор может измениться
+        postfix.Execute(&it);
+        //попали в конец блока
+        
       }
       catch (std::string errorStr)
       {

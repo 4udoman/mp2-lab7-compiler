@@ -59,12 +59,7 @@ bool TPostfix::IsNumber(const std::string& lexem)
 // Здесь выполняются функции, а также переставляется итератор
 void TPostfix::Execute(HierarchyList::const_iterator* it)
 {
-  if (!it) //nullptr
-  {
-    it->up();
-    lastCompare = logicBlock.pop();
-    it->next();
-  }
+  
   TStack<Variable> algArguments;
   TStack<std::string> strArguments;
 
@@ -109,7 +104,7 @@ void TPostfix::Execute(HierarchyList::const_iterator* it)
         logicBlock.push(true);
         lastCompare = true;
         it->down();
-        if (!it) // it != nullptr Вывод о том, что из одной строчки
+        if (!*it) // it != nullptr Вывод о том, что из одной строчки
         {
           break; 
         }
@@ -263,7 +258,16 @@ void TPostfix::Execute(HierarchyList::const_iterator* it)
         algArguments.push(*variable);
       }
     }
+    
   } 
+  //значит, в результате последнего перемещения итератора попали в конец блока
+  if (*it == nullptr)
+  {
+    it->up();
+    if(!logicBlock.empty())
+      lastCompare = logicBlock.pop();
+    it->next();
+  }
 }
 
 void TPostfix::UpdateTable(HierarchyList::const_iterator it)
