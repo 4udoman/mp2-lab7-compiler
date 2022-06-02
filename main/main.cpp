@@ -16,7 +16,7 @@ int main()
   t->Insert("d", Variable(0));
 
   ExecObj execObj(l, t);
-  execObj.Execute(); // */
+  execObj.Execute(); */
 
   return 0;
 }

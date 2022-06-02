@@ -33,7 +33,7 @@ struct ExitCodes
     NOT_ENOUGH_ARGUMENTS_TO_CALL_THE_FUNCTION
   };
   friend std::ostream& operator<<(std::ostream& os, const ExitCodes::CODES& err) {
-    os << ExitCodes::ErrorList[err] << std::endl;
+    os << ExitCodes::ErrorList[err];
     return os;
   }
 };
