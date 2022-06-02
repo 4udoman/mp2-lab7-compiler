@@ -145,6 +145,7 @@ public:
     std::string* operator->() const { return &(cur->data); }
     int layer() const { return st->size(); }
     bool empty() const { return st->empty(); }
+    friend bool operator==(const const_iterator& it, void* p) { return it.cur == p; }
 
     ~const_iterator() { delete st; }
   };
