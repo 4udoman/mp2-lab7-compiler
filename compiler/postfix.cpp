@@ -4,48 +4,48 @@
 void TPostfix::ToPostfix()
 {
   TStack<std::string> opStack;
-  
-    for (int i = 0; i < infix.size(); i++) {
-      std::string lexem = infix[i];
 
-      if (lexem == "," || lexem == ";" || lexem == "then")
+  for (int i = 0; i < infix.size(); i++) {
+    std::string lexem = infix[i];
+
+    if (lexem == "," || lexem == ";" || lexem == "then")
+      continue;
+
+    if (!operation.isOperation(lexem)) {
+      postfix.push_back(lexem);
+      continue;
+    }
+    else {
+      if (lexem == "(") {
+        opStack.push(lexem);
         continue;
+      }
 
-      if (!operation.isOperation(lexem)) {  
-        postfix.push_back(lexem);
+      if (lexem == ")") {
+        //Заполняем постфикс всеми лексемами между ()
+        while (opStack.tos() != "(")
+          postfix.push_back(opStack.pop());
+        opStack.pop();
+        continue;
+      }
+      //Пока на вершине стека находится операция с большим приоритетом, чем текущая добавляем в постфикс
+      while (!opStack.empty() && operation.getPriority(opStack.tos()) >= operation.getPriority(lexem))
+        postfix.push_back(opStack.pop());
+
+      if (opStack.empty()) {
+        opStack.push(lexem);
         continue;
       }
       else {
-        if (lexem == "(") {
+        if (operation.getPriority(opStack.tos()) < operation.getPriority(lexem)) {
           opStack.push(lexem);
           continue;
-        }
-  
-        if (lexem == ")") {
-          //Заполняем постфикс всеми лексемами между ()
-          while (opStack.tos() != "(")
-            postfix.push_back(opStack.pop());
-          opStack.pop();
-          continue;
-        }
-        //Пока на вершине стека находится операция с большим приоритетом, чем текущая добавляем в постфикс
-        while (!opStack.empty() && operation.getPriority(opStack.tos()) >= operation.getPriority(lexem))
-          postfix.push_back(opStack.pop());
-  
-        if (opStack.empty()) {
-          opStack.push(lexem);
-          continue;
-        }
-        else {
-          if (operation.getPriority(opStack.tos()) < operation.getPriority(lexem)) {
-            opStack.push(lexem);
-            continue;
-          }
         }
       }
     }
-    while (!opStack.empty())
-      postfix.push_back(opStack.pop());
+  }
+  while (!opStack.empty())
+    postfix.push_back(opStack.pop());
 }
 
 bool TPostfix::IsNumber(const std::string& lexem)
@@ -59,7 +59,7 @@ bool TPostfix::IsNumber(const std::string& lexem)
 // Здесь выполняются функции, а также переставляется итератор
 void TPostfix::Execute(HierarchyList::const_iterator* it)
 {
-  
+
   TStack<Variable> algArguments;
   TStack<std::string> strArguments;
 
@@ -106,7 +106,7 @@ void TPostfix::Execute(HierarchyList::const_iterator* it)
         it->down();
         if (!*it) // it != nullptr Вывод о том, что из одной строчки
         {
-          break; 
+          break;
         }
         else
         {
@@ -131,7 +131,7 @@ void TPostfix::Execute(HierarchyList::const_iterator* it)
           it->next();
           it->next();
           it->next();
-        } 
+        }
       }
     }
     else if (tmp == "else")
@@ -149,6 +149,24 @@ void TPostfix::Execute(HierarchyList::const_iterator* it)
           it->next();
         }
       }
+      else
+      {
+        it->down();
+        if (!*it) // it != nullptr Вывод о том, что из одной строчки, но должны пропустить т.к. false
+        {
+          it->up();
+          it->next();
+        }
+        else //есть begin
+        {
+          it->up();
+          //Чтобы пропустить begin end
+          it->next();
+          it->next();
+          it->next();
+        }
+
+      }
     }
     else if (tmp == "write")
     {
@@ -158,7 +176,7 @@ void TPostfix::Execute(HierarchyList::const_iterator* it)
         if (algArguments.empty())
           throw ExitCodes::NOT_ENOUGH_ARGUMENTS_TO_CALL_THE_FUNCTION;
         std::cout << algArguments.pop();
-      }   
+      }
       else
       {
         std::cout << strArguments.pop();
@@ -213,10 +231,17 @@ void TPostfix::Execute(HierarchyList::const_iterator* it)
     {
       Variable right = algArguments.pop();
       Variable left = algArguments.pop();
+      if (!right.isInt)
+      {
+        if (left.isInt)
+        {
+          right = Variable((int)right.val.d, right.name);
+        }
+      }
       right.name = left.name;
       Variable* tableArg = table->Find(left.name);
-      if(tableArg == nullptr)
-        throw ExitCodes::NO_SUCH_VARIABLE;
+      if (tableArg == nullptr)
+        throw std::string("No such variable!");
       *tableArg = right;
       it->next();
     }
@@ -258,13 +283,13 @@ void TPostfix::Execute(HierarchyList::const_iterator* it)
         algArguments.push(*variable);
       }
     }
-    
-  } 
+
+  }
   //значит, в результате последнего перемещения итератора попали в конец блока
   if (*it == nullptr)
   {
     it->up();
-    if(!logicBlock.empty())
+    if (!logicBlock.empty())
       lastCompare = logicBlock.pop();
     it->next();
   }
@@ -300,7 +325,7 @@ void TPostfix::UpdateTable(HierarchyList::const_iterator it)
               std::string key = lexems.tos();
               table->changeValue(key, Variable(INT_MAX, lexems.pop()));
             }
-              
+
           }
           else
           {
@@ -321,7 +346,7 @@ void TPostfix::UpdateTable(HierarchyList::const_iterator it)
               std::string key = lexems.tos();
               table->changeValue(key, Variable(DBL_MAX, lexems.pop()));
             }
-              
+
           }
           else
           {
@@ -331,7 +356,7 @@ void TPostfix::UpdateTable(HierarchyList::const_iterator it)
               value.name = lexems.tos();
               table->changeValue(lexems.pop(), value);
             }
-              
+
           }
         }
         else

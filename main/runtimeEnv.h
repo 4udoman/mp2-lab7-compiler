@@ -5,24 +5,21 @@
 #include "execObj.h"
 #include "unsortListTable.h"
 
-class RuntimeEnv
-{
-private:
+class RuntimeEnv {
   UnsortListTable<std::string, ExecObj> progs;
 public:
   RuntimeEnv() {}
+
   void Run() {
-    int numStr = 0;
-    int choice = 1;
-    ExitCodes::CODES code;
-    std::string tmp;
-    HierarchyList* l; UnsortListTable<std::string, Variable>* t = nullptr;
+    int numStr = 0, choice = 0;
+    ExitCodes::CODES code; std::string tmp;
+    HierarchyList* l = nullptr; UnsortListTable<std::string, Variable>* t = nullptr;
     ExecObj* chosen_prog = nullptr;
 
-    while (choice) {
+    while (true) {
       system("cls");
       std::cout <<
-        "        _--***  Pascal-- Emulator  ***--_" << std::endl <<
+        " _--*** Pascal— Emulator ***--_" << std::endl <<
         "Menu: " << std::endl <<
         "1 Load Program" << std::endl <<
         "2 Run Program" << std::endl <<
@@ -31,17 +28,14 @@ public:
         "Choose Option:" << std::endl;
       std::cin >> choice;
       switch (choice) {
-      case 0:
+      case 0: // EXIT
         std::cout << "Goodbye" << std::endl;
-        choice = 0;
-        break;
-      case 1:
+        return;
+      case 1: // LOAD PROGRAM
         std::cout << "Enter path: ";
         std::cin >> tmp;
         l = new HierarchyList();
-        try {
-          l->Build(tmp);
-        }
+        try { l->Build(tmp); }
         catch (...) {
           // ERROR wrong tabulation
           delete l;
@@ -49,16 +43,17 @@ public:
         }
         std::cout << *l << std::endl << std::endl;
 
-        if (!(code = SyntChecker::Check(l, t, numStr))) {
-          std::cout << code << "in " << numStr << " line\n";
-          delete l;
-          break;
-        }
+        //if (!(code = SyntChecker::Check(l, t, numStr))) {
+        // std::cout << code << " on line " << numStr << std::endl;
+        // delete l;
+        // break;
+        //}
         std::cout << "Enter name: ";
         std::cin >> tmp;
         progs.Insert(tmp, ExecObj{ l, t });
+        system("pause");
         break;
-      case 2:
+      case 2: // RUN PROGRAM
         std::cout << "Enter name: ";
         std::cin >> tmp;
         if ((chosen_prog = progs.Find(tmp)) == nullptr) {
@@ -66,11 +61,13 @@ public:
           break;
         }
         system("cls");
-        chosen_prog->Execute();
+        //chosen_prog->Execute();
         system("pause");
         break;
-      case 3:
+      case 3: // PRINT PROGRAMS
+        std::cout << "Program list:" << std::endl;
         progs.PrintKeys();
+        system("pause");
         break;
       default:
         std::cout << "No such command" << std::endl;

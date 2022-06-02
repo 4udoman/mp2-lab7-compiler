@@ -17,9 +17,12 @@ public:
     table = _table;
     postfix.Init(_table);
   }
+
   ExecObj(const ExecObj& exObj)
   {
     ls = exObj.ls;
+    table = exObj.table;
+    postfix.Init(table);
   }
   
   void Execute()

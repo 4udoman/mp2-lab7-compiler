@@ -14,6 +14,8 @@ struct ExitCodes
     INVALID_VARIABLE_TYPE,
     INVALID_VARIABLE_VALUE,
     DOUBLE_DECLARATION,
+    TOO_MUCH_BEGIN,
+    TOO_MUCH_END,
 
     SEMICOLON_IS_REQUIRED,
     INCORRECT_ORDER_WITH_PROGRAM,
@@ -44,6 +46,8 @@ const char* ExitCodes::ErrorList[] = {
     "Invalid variable type",
     "Invalid variable value",
     "Double declaration",
+    "Too much begin",
+    "Too much end",
 
     "Semicolon is required",
     "Incorrect order with program",

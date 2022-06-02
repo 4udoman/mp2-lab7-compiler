@@ -38,11 +38,16 @@ private:
     return (!synt.isSyntax(lexem) && lexem.find_first_of("0123456789") != 0 && lexem.find_first_not_of("0123456789.") != std::string::npos);
   }
 
+  static bool IsSyntax(const std::string& lexem)
+  {
+    Syntax synt;
+    return synt.isSyntax(lexem);
+  }
+
 public:
   static ExitCodes::CODES Check(HierarchyList* ls, UnsortListTable<std::string, Variable>* table, int& numStr)
   {
     Syntax synt;
-    table->clear();
     std::vector<bool> blocks = { false, false, false }; // program, const, var
     bool isReady = false;;
     UnsortListTable<std::string, Variable> constTable, varTable;
@@ -171,6 +176,24 @@ public:
       {
         isReady = true;
         *table = constTable + varTable;
+      }
+    }
+
+    return ExitCodes::ALL_IS_GOOD;
+
+    /*
+
+    while (it.end() != true)
+    {
+      std::vector<std::string> strParams = Parser(*it);
+      std::string firstWord = strParams[0];
+      if (IsSyntax(firstWord) == true)
+      {
+
+      }
+      else
+      {
+
       }
     }
 

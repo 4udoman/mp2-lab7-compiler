@@ -22,16 +22,17 @@ struct Variable {
       isInt = 1; val.i = stoi(s);
     }
   }
-  Variable operator=(const Variable & v) {
-    if (isInt == v.isInt) {
-      val.i = v.val.i;
-    }else if (isInt && !v.isInt) {
-      val.i = int(v.val.d);
-    }else {
-      val.d = v.val.i;
-    }
-    return *this;
-  }
+  //Variable& operator=(const Variable & v) {
+  //  if (isInt == v.isInt) {
+  //    val.i = v.val.i;
+  //  }else if (isInt && !v.isInt) {
+  //    val.i = int(v.val.d);
+  //  }else {
+  //    val.d = v.val.i;
+  //  }
+  //  this->name = v.name;
+  //  return *this;
+  //}
   Variable operator+(const Variable& v) {
     if (isInt && v.isInt)
       return Variable(val.i + v.val.i);
