@@ -7,10 +7,10 @@ void TPostfix::ToPostfix()
   
     for (int i = 0; i < infix.size(); i++) {
       std::string lexem = infix[i];
-      if (!operation.isOperation(lexem)) {
-        //перед нами лексема
-        if (lexem == "," || ";")
-          continue;
+
+      if (lexem == "," || lexem == ";" || lexem == "then")
+        continue;
+      if (!operation.isOperation(lexem)) {  
         postfix.push_back(lexem);
         continue;
       }

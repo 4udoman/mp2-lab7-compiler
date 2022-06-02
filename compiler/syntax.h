@@ -7,7 +7,7 @@
 class Operations // Класс, хранящий поддерживаемые операции
 {
 private:
-  std::map<std::string, std::vector<int>> ops; // string - name of operation; vector<int> - priority, arity; ops - OPerationS
+  std::map<std::string, std::vector<int>> ops;// string - name of operation; vector<int> - priority, arity; ops - OPerationS
 public:
   Operations() { // При добавлении операции в конструктор, обязательно нужно реализовать логику этой операции в Calc и добавить наименование в static string str_op()
     ops.emplace("*", std::vector<int>{ 4, 2 });
@@ -28,18 +28,11 @@ public:
     ops.emplace("writeln", std::vector<int>{ 2, -1 });
     ops.emplace("read", std::vector<int>{ 2, -1 });
     ops.emplace("if", std::vector<int>{ 0, 1 });
-    ops.emplace("then", std::vector<int>{ -1, -1 });
     ops.emplace("begin", std::vector<int>{ 0, 0 });
     ops.emplace("end", std::vector<int>{ 0, 0 });
-    ops.emplace("program", std::vector<int>{ -1, -1 });
-    ops.emplace(";", std::vector<int>{ -1, -1 });
-    ops.emplace(",", std::vector<int>{ -1, -1 });
     ops.emplace("const", std::vector<int>{ -1, -1 });
     ops.emplace("var", std::vector<int>{ -1, -1 });
     ops.emplace("end.", std::vector<int>{ -1, -1 });
-    ops.emplace("int", std::vector<int>{ -1, -1 });
-    ops.emplace("double", std::vector<int>{ -1, -1 });
-    ops.emplace(":", std::vector<int>{ -1, -1 });
   }
 
   bool isOperation(const std::string& elem) const { return ops.find(elem) != ops.end(); } // Проверка является ли данный элемент операцией, которая объявлена в классе

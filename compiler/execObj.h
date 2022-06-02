@@ -27,9 +27,9 @@ public:
       {
         postfix.Execute(&it); //идем не линейно, поэтому итератор может измениться
       }
-      catch (...)
+      catch (std::string errorStr)
       {
-      
+        std::cout << errorStr;
       }
     }
 
