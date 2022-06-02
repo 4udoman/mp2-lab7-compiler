@@ -22,7 +22,16 @@ struct Variable {
       isInt = 1; val.i = stoi(s);
     }
   }
-
+  Variable operator=(const Variable & v) {
+    if (isInt == v.isInt) {
+      val.i = v.val.i;
+    }else if (isInt && !v.isInt) {
+      val.i = int(v.val.d);
+    }else {
+      val.d = v.val.i;
+    }
+    return *this;
+  }
   Variable operator+(const Variable& v) {
     if (isInt && v.isInt)
       return Variable(val.i + v.val.i);
@@ -79,7 +88,6 @@ struct Variable {
       return Variable(int(val.i != v.val.d));
     return Variable(int(val.d != v.val.i));
   }
-
   Variable operator>(const Variable& v)
   {
     if (isInt && v.isInt)
@@ -90,7 +98,6 @@ struct Variable {
       return Variable(int(val.i > v.val.d));
     return Variable(int(val.d > v.val.i));
   }
-
   Variable operator<(const Variable& v)
   {
     if (isInt && v.isInt)
@@ -109,7 +116,6 @@ struct Variable {
       os << v.val.d;
     return os;
   }
-
   friend std::istream& operator>>(std::istream& is, Variable& v) {
     std::string s; is >> s;
     try { int i = stoi(s); v.isInt = 1; v.val.i = i; }

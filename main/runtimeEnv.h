@@ -4,7 +4,7 @@
 #include "syntChecker.h"
 #include "execObj.h"
 #include "unsortListTable.h"
-/*
+
 class RuntimeEnv
 {
 private:
@@ -12,45 +12,61 @@ private:
 public:
   RuntimeEnv() {}
   void Run() {
-    int choice = 1, code = 0; 
+    int choice = 1; ExitCodes::CODES code;
     std::string tmp; 
-    ExecObj *prog;
-    HierarchyList* l;
+    HierarchyList* l; UnsortListTable<std::string, Variable>* t;
+    ExecObj *chosen_prog;
 
     while (choice){
+      system("cls");
       std::cout <<
-      "           ***Pascal-- Emulator***" << std::endl <<
+      "        _--***  Pascal-- Emulator  ***--_" << std::endl <<
       "Menu: " << std::endl <<
       "1 Load Program" << std::endl <<
       "2 Run Program" << std::endl <<
+      "3 Show program list" << std::endl <<
       "0 Exit" << std::endl <<
       "Choose Option:" << std::endl;
       std::cin >> choice;
       switch (choice) {
       case 0:
         std::cout << "Goodbye" << std::endl;
+        choice = 0;
         break;
       case 1:
         std::cout << "Enter path: ";
         std::cin >> tmp;
-        // l = new HierarchyList();
-        // l.Build(tmp);
-        // if(!(code = Check(l))) {
-        //   std::cout << ExitCodes::ErrorList[code];
-        //   break;
-        // }
+        l = new HierarchyList();
+        try {
+          l->Build(tmp);
+        }catch (...) {
+          // ERROR wrong tabulation
+          delete l;
+          break;
+        }
+        std::cout << *l << std::endl << std::endl;
+        if(!(code = SyntChecker::Check(l))) {
+          std::cout << code;
+          delete l;
+          break;
+        }
         std::cout << "Enter name: ";
         std::cin >> tmp;
-        // progs.Insert(tmp, *prog);
+        progs.Insert(tmp, ExecObj(l, t));
         break;
       case 2:
         std::cout << "Enter name: ";
         std::cin >> tmp;
-        if ((prog = progs.Find(tmp)) == nullptr) {
+        if ((chosen_prog = progs.Find(tmp)) == nullptr) {
           std::cout << "No such program" << std::endl;
           break;
         }
-        // frog->Run();
+        system("cls");
+        chosen_prog->Execute();
+        system("pause");
+        break;
+      case 3:
+        progs.PrintKeys();
         break;
       default:
         std::cout << "No such command" << std::endl;
@@ -59,4 +75,3 @@ public:
   }
   ~RuntimeEnv() {}
 };
-*/
