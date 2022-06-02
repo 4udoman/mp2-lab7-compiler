@@ -118,3 +118,51 @@ public:
     return false;
   }
 };
+
+std::vector<std::string> Parser(const std::string& str)
+{
+  Operations operation;
+  std::vector<std::string> infix;
+
+  for (int i = 0; i < str.size();)
+  {
+    std::string elem;
+    std::string lexem;
+    elem = str[i];
+
+    if (operation.isOperation(elem))
+    {
+      lexem = (char)tolower(elem[0]);
+      i++;
+    }
+    else
+    {
+      if (elem == "'") // Ќет проверки на i < str.size(), потому что считаем, что строка правильно введена на этом этапе
+      {
+        lexem += elem[0];
+        elem = str[++i];
+        while (elem != "'") // ¬ проверке синтаксиса сюда добавить проверку на i < str.size()
+        {
+          lexem += elem[0];
+          elem = str[++i];
+        }
+        lexem += elem[0];
+        elem = str[++i];
+      }
+      while (!operation.isOperation(lexem) && !operation.isOperation(elem) && i < str.size())
+      {
+        if (elem != " ")
+          lexem += (char)tolower(elem[0]);
+        elem = str[++i];
+      }
+    }
+
+    if ((lexem == "-") && (infix.size() == 0 || (infix.size() > 0 && infix[infix.size() - 1] == "("))) // ѕревращение унарного минуса в бинарный
+      infix.push_back("0");
+
+    if (lexem.size() != 0)
+      infix.push_back(lexem);
+  }
+
+  return infix;
+}

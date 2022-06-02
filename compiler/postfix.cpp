@@ -1,51 +1,6 @@
 #include "postfix.h"
 #include "syntax.h"
 
-
-//Инфикс для логических выражений и функций, а не для алгебраических вычислений
-void TPostfix::ToInfix(const std::string& str)
-{
-  for (int i = 0; i < str.size();)
-  {
-    std::string elem;
-    std::string lexem;
-    elem = str[i];
-
-    if (operation.isOperation(elem))
-    {
-      lexem = (char)tolower(elem[0]);
-      i++;
-    }
-    else
-    {
-      if (elem == "'") // Нет проверки на i < str.size(), потому что считаем, что строка правильно введена на этом этапе
-      {
-        lexem += elem[0];
-        elem = str[++i];
-        while (elem != "'") // В проверке синтаксиса сюда добавить проверку на i < str.size()
-        {
-          lexem += elem[0];
-          elem = str[++i];
-        }
-        lexem += elem[0];
-        elem = str[++i];
-      }
-      while (!operation.isOperation(lexem) && !operation.isOperation(elem) && i < str.size())
-      {
-        if (elem != " ")
-          lexem += (char)tolower(elem[0]);
-        elem = str[++i];
-      }
-    }
-
-    if ((lexem == "-") && (infix.size() == 0 || (infix.size() > 0 && infix[infix.size() - 1] == "("))) // Превращение унарного минуса в бинарный
-      infix.push_back("0");
-
-    if (lexem.size() != 0)
-      infix.push_back(lexem);
-  }
-}
-
 void TPostfix::ToPostfix()
 {
   TStack<std::string> opStack;
@@ -111,17 +66,10 @@ void TPostfix::Execute(HierarchyList::iterator* it)
   }
   TStack<Variable*> algArguments;
   TStack<std::string> strArguments;
-  infix.clear();
-  ToInfix(**it);
+
+  infix = Parser(**it);
   postfix.clear();
   ToPostfix();
-
-
-   //Добавить вызов ToPostfix
-   //Полагаю, что можно удалить следующие части проги:
-   //std::vector<std::string> infix - получать его только при вызове toPostfix()
-   //std::string GetStringInfix() - нет смысла выводить текущий инфикс, мы храним его в иерарх. списке
-
 
   for (size_t i = 0; i < postfix.size(); i++)
   {

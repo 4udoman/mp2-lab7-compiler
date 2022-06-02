@@ -18,7 +18,6 @@ private:
   TPostfix(const TPostfix&) = delete; // Запрет на копирование
   void operator=(const TPostfix&) = delete; // Запрет на присваивание
 
-  void ToInfix(const std::string& str);
   void ToPostfix(); // Преобразование infix в vector<string> postfix
   bool IsNumber(const std::string& lexem);
 
