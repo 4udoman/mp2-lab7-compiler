@@ -200,6 +200,7 @@ std::vector<std::string> Parser(const std::string& str)
       infix.push_back(lexem.substr(0, pos));
       infix.push_back(lexem.substr(pos, 3));
       infix.push_back(lexem.substr(pos + 3));
+      continue;
     }
 
     if ((lexem == "-") && (infix.size() == 0 || (infix.size() > 0 && infix[infix.size() - 1] == "("))) // ѕревращение унарного минуса в бинарный
