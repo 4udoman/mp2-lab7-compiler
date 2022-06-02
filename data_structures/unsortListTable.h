@@ -52,7 +52,7 @@ public:
 
   void clear() {
     for (int i = list.GetSize(); i > 0; --i)
-      list.Delete(l.begin());
+      list.Delete(list.begin());
   }
 
   UnsortListTable<TKey, TData> operator=(const UnsortListTable<TKey, TData>& t) {
