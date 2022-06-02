@@ -169,7 +169,6 @@ public:
         it.next();
         blocks[1] = true; // Так как строгая последовательность
         blocks[2] = true;
-        it.next();
         continue;
       }
       else if (tmp == "begin")
