@@ -6,7 +6,7 @@ var
   res,d :double;
 begin
   numa1 := 5;
-  write('Enter numa2');
+  write('Enter numa2', numa1 div 3);
   Read(numa2);
   write('Enter d');
   read(d);

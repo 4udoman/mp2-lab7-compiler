@@ -36,6 +36,6 @@ public:
     return tmp;
   }
 
-  void Execute(HierarchyList::iterator* it);
-  void UpdateTable(HierarchyList::iterator it);
+  void Execute(HierarchyList::const_iterator* it);
+  void UpdateTable(HierarchyList::const_iterator it);
 };
