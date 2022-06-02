@@ -10,10 +10,10 @@ begin
   Read(numa2);
   write('Enter d');
   read(d);
-  if(b mod 2 = 0) then
+  if(numa2 - 2 = 0) then
   begin
-    res:=(numa1 - numa2 * 5 div 2);
-    writeln('Res', Res); 
+    res:=(numa1 - numa2 * 5 + 2);
+    write('Res', Res); 
   end
   else
     writeln('Error 404');

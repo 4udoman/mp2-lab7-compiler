@@ -107,21 +107,36 @@ void TPostfix::Execute(HierarchyList::iterator* it)
       if (algArguments.pop().val.i)
       {
         logicBlock.push(true);
+        lastCompare = true;
         it->down();
-        if (!it) // it == nullptr Вывод о том, что есть begin
+        if (!it) // it != nullptr Вывод о том, что из одной строчки
         {
-          it->next(); //перейдем в begin
+          break; 
+        }
+        else
+        {
+          it->up();
+          it->next();
         }
       }
       else
       {
         logicBlock.push(false);
-        if (!it) // it == nullptr Вывод о том, что есть begin
+        lastCompare = false;
+        it->down();
+        if (!it) // it != nullptr Вывод о том, что из одной строчки, но должны пропустить т.к. false
         {
-          it->Next(2); //пропускаем begin
-        }
-        else
+          it->up();
           it->next();
+        }
+        else //есть begin
+        {
+          it->up();
+          //Чтобы пропустить begin end
+          it->next();
+          it->next();
+          it->next();
+        } 
       }
     }
     else if (tmp == "else")
@@ -129,9 +144,14 @@ void TPostfix::Execute(HierarchyList::iterator* it)
       if (lastCompare == false)
       {
         it->down();
-        if (!it) // it == nullptr Вывод о том, что есть begin
+        if (!it) // it != nullptr Вывод о том, что из одной строки
         {
-          it->next(); //перейдем в begin
+          break; //перейдем в begin
+        }
+        else
+        {
+          it->up();
+          it->next();
         }
       }
     }
