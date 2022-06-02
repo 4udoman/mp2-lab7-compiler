@@ -57,7 +57,7 @@ bool TPostfix::IsNumber(const std::string& lexem)
 
 
 // Здесь выполняются функции, а также переставляется итератор
-void TPostfix::Execute(HierarchyList::iterator* it)
+void TPostfix::Execute(HierarchyList::const_iterator* it)
 {
   if (!it) //nullptr
   {
@@ -266,7 +266,7 @@ void TPostfix::Execute(HierarchyList::iterator* it)
   } 
 }
 
-void TPostfix::UpdateTable(HierarchyList::iterator it)
+void TPostfix::UpdateTable(HierarchyList::const_iterator it)
 {
   it.down();
   //Должен работать до тех пор, пока не конец блока
