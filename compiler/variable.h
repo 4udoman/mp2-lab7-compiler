@@ -14,8 +14,8 @@ struct Variable {
   Variable(double dd) :isInt(0) { val.d = dd; }
   Variable(int ii) :isInt(1) { val.i = ii; }
   Variable(std::string s) {
-    try { int i = stoi(s); isInt = 1; val.i = i; }
-    catch (...) { isInt = 0; val.d = stod(s); }
+    try { int i = std::stoi(s); isInt = 1; val.i = i; }
+    catch (...) { isInt = 0; val.d = std::stod(s); }
   }
 
   Variable operator+(const Variable& v) {

@@ -24,7 +24,7 @@ public:
   }
 
   void Insert(TKey key, TData data) {
-    list.InsertFirst(Cell(key, data));
+    list.InsertFirst(Cell{ key, data });
   }
 
   TData* Find(TKey key) {
