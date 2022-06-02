@@ -142,8 +142,9 @@ public:
     synt.push_front("program");
     synt.push_front("const");
     synt.push_front("var");
+    synt.push_front(":");
     synt.push_front(";");
-    synt.push_front(".");
+    synt.push_front(",");
   }
 
   bool isSyntax(const std::string& elem) const { return std::find(synt.begin(), synt.end(), elem) != synt.end(); }
@@ -167,13 +168,13 @@ std::vector<std::string> Parser(const std::string& str)
     }
     else
     {
-      if (elem == "'") // Ќет проверки на i < str.size(), потому что считаем, что строка правильно введена на этом этапе
+      if (elem == "'" && i < str.size())
       {
-        do // ¬ проверке синтаксиса сюда добавить проверку на i < str.size()
+        do
         {
           lexem += elem[0];
           elem = str[++i];
-        } while (elem != "'");
+        } while (elem != "'" && i < str.size());
         lexem += elem[0];
         elem = str[++i];
       }
@@ -184,6 +185,10 @@ std::vector<std::string> Parser(const std::string& str)
         elem = str[++i];
       }
     }
+
+    if (lexem == ":" && i < str.size())
+      if (str[i + 1] == '=')
+        lexem += str[++i];
 
     if ((lexem == "-") && (infix.size() == 0 || (infix.size() > 0 && infix[infix.size() - 1] == "("))) // ѕревращение унарного минуса в бинарный
       infix.push_back("0");
