@@ -192,7 +192,10 @@ std::vector<std::string> Parser(const std::string& str)
         lexem += str[i++];
 
     if (str.find("writeln") != std::string::npos && str.find("write") == str.find(lexem))
+    {
       lexem = "writeln";
+      continue;
+    }
 
     size_t pos = std::min(lexem.find("mod"), lexem.find("div"));
     if (pos != std::string::npos)
