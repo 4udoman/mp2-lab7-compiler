@@ -57,6 +57,7 @@ const char* ExitCodes::ErrorList[] = {
     "Unable to create second program",
     "Unable to create const",
     "Unable to create var",
+    "Wrong tabulation",
 
 
 
