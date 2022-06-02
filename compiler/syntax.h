@@ -1,4 +1,6 @@
 #pragma once
+#include <algorithm>
+#include <list>
 #include <map>
 #include <vector>
 #include <iostream>
@@ -28,6 +30,7 @@ public:
     ops.emplace("writeln", std::vector<int>{ 2, -1 });
     ops.emplace("read", std::vector<int>{ 2, -1 });
     ops.emplace("if", std::vector<int>{ 0, 1 });
+    ops.emplace("else", std::vector<int>{ 0, 1 });
     ops.emplace("begin", std::vector<int>{ 0, 0 });
     ops.emplace("end", std::vector<int>{ 0, 0 });
     ops.emplace("const", std::vector<int>{ -1, -1 });
@@ -53,7 +56,7 @@ public:
     if (elem == "*")
     {
       return Variable(left * right);
-    } 
+    }
     if (elem == "+")
     {
       return Variable(left + right);
@@ -107,9 +110,48 @@ public:
   }
 };
 
+class Syntax
+{
+private:
+  std::list<std::string> synt;
+public:
+  Syntax()
+  {
+    synt.push_front("*");
+    synt.push_front("+");
+    synt.push_front("-");
+    synt.push_front("(");
+    synt.push_front(")");
+    synt.push_front("mod");
+    synt.push_front("div");
+    synt.push_front(":=");
+    synt.push_front("=");
+    synt.push_front("<");
+    synt.push_front(">");
+    synt.push_front(">=");
+    synt.push_front("<=");
+    synt.push_front("write");
+    synt.push_front("writeln");
+    synt.push_front("read");
+    synt.push_front("if");
+    synt.push_front("then");
+    synt.push_front("else");
+    synt.push_front("begin");
+    synt.push_front("end");
+    synt.push_front("end.");
+    synt.push_front("program");
+    synt.push_front("const");
+    synt.push_front("var");
+    synt.push_front(";");
+    synt.push_front(".");
+  }
+
+  bool isSyntax(const std::string& elem) const { return std::find(synt.begin(), synt.end(), elem) != synt.end(); }
+};
+
 std::vector<std::string> Parser(const std::string& str)
 {
-  Operations operation;
+  Syntax syntax;
   std::vector<std::string> infix;
 
   for (int i = 0; i < str.size();)
@@ -118,7 +160,7 @@ std::vector<std::string> Parser(const std::string& str)
     std::string lexem;
     elem = str[i];
 
-    if (operation.isOperation(elem))
+    if (syntax.isSyntax(elem))
     {
       lexem = (char)tolower(elem[0]);
       i++;
@@ -127,17 +169,15 @@ std::vector<std::string> Parser(const std::string& str)
     {
       if (elem == "'") // Ќет проверки на i < str.size(), потому что считаем, что строка правильно введена на этом этапе
       {
-        lexem += elem[0];
-        elem = str[++i];
-        while (elem != "'") // ¬ проверке синтаксиса сюда добавить проверку на i < str.size()
+        do // ¬ проверке синтаксиса сюда добавить проверку на i < str.size()
         {
           lexem += elem[0];
           elem = str[++i];
-        }
+        } while (elem != "'");
         lexem += elem[0];
         elem = str[++i];
       }
-      while (!operation.isOperation(lexem) && !operation.isOperation(elem) && i < str.size())
+      while (!syntax.isSyntax(lexem) && !syntax.isSyntax(elem) && i < str.size())
       {
         if (elem != " ")
           lexem += (char)tolower(elem[0]);
