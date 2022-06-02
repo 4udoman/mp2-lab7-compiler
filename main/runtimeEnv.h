@@ -4,6 +4,7 @@
 #include "syntChecker.h"
 #include "execObj.h"
 #include "unsortListTable.h"
+#include "postfix.cpp"
 
 class RuntimeEnv {
   UnsortListTable<std::string, ExecObj> progs;
@@ -14,12 +15,12 @@ public:
     int numStr = 0, choice = 0;
     ExitCodes::CODES code; std::string tmp;
     HierarchyList* l = nullptr; UnsortListTable<std::string, Variable>* t = nullptr;
-    ExecObj* chosen_prog = nullptr;
+    ExecObj* prog = nullptr;
 
     while (true) {
       system("cls");
       std::cout <<
-        " _--*** Pascal— Emulator ***--_" << std::endl <<
+        " _--*** Pascal-- Emulator ***--_" << std::endl <<
         "Menu: " << std::endl <<
         "1 Load Program" << std::endl <<
         "2 Run Program" << std::endl <<
@@ -36,8 +37,8 @@ public:
         std::cin >> tmp;
         l = new HierarchyList();
         try { l->Build(tmp); }
-        catch (...) {
-          // ERROR wrong tabulation
+        catch (int line) {
+          std::cout << ExitCodes::CODES::WRONG_TABULATION << " on line " << line << std::endl;
           delete l;
           break;
         }
@@ -50,13 +51,13 @@ public:
         //}
         std::cout << "Enter name: ";
         std::cin >> tmp;
-        progs.Insert(tmp, ExecObj{ l, t });
+        progs.Insert(tmp, ExecObj(l, t));
         system("pause");
         break;
       case 2: // RUN PROGRAM
         std::cout << "Enter name: ";
         std::cin >> tmp;
-        if ((chosen_prog = progs.Find(tmp)) == nullptr) {
+        if ((prog = progs.Find(tmp)) == nullptr) {
           std::cout << "No such program" << std::endl;
           break;
         }

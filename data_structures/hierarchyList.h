@@ -40,14 +40,15 @@ public:
     l.DeleteSubTree(l.root);
     std::size_t cur_layer, layer;
     std::string s;
+    int line = 1;
 
     if (is.peek() != EOF) {
       std::getline(is, s);
       if (s.find_first_not_of(" ") != 0)
-        throw - 1;
+        throw line;
       l.root = new Node(s);
     }
-    cur_layer = 0;
+    cur_layer = 0; ++line;
     auto it = l.begin();
 
     while (is.peek() != EOF) {
@@ -67,7 +68,8 @@ public:
           it.next();
           cur_layer = layer;
         } else
-          throw -1;
+          throw line;
+        ++line;
     }
     return is;
   }

@@ -10,8 +10,9 @@ private:
   HierarchyList* ls;
   UnsortListTable<std::string, Variable>* table; // TODO
   TPostfix postfix;
+  bool fake;
 public:
-  ExecObj(HierarchyList* _ls, UnsortListTable<std::string, Variable>* _table)
+  ExecObj(HierarchyList* _ls, UnsortListTable<std::string, Variable>* _table, bool _fake = false):fake(_fake)
   {
     ls = _ls;
     table = _table;
@@ -45,7 +46,9 @@ public:
 
   ~ExecObj() 
   {
-    delete ls;
-    delete table;
+    if (!fake) {
+      delete ls;
+      delete table;
+    }
   }
 };
