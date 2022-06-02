@@ -16,8 +16,8 @@ public:
     int choice = 1;
     ExitCodes::CODES code;
     std::string tmp;
-    HierarchyList* l; UnsortListTable<std::string, Variable>* t;
-    ExecObj* chosen_prog;
+    HierarchyList* l; UnsortListTable<std::string, Variable>* t = nullptr;
+    ExecObj* chosen_prog = nullptr;
 
     while (choice) {
       system("cls");
@@ -48,6 +48,7 @@ public:
           break;
         }
         std::cout << *l << std::endl << std::endl;
+
         if (!(code = SyntChecker::Check(l, t, numStr))) {
           std::cout << code << "in " << numStr << " line\n";
           delete l;

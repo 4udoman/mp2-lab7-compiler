@@ -16,7 +16,6 @@ private:
   TStack<bool> logicBlock; 
   bool lastCompare = false;
 
-  TPostfix(const TPostfix&) = delete; // Запрет на копирование
   void operator=(const TPostfix&) = delete; // Запрет на присваивание
 
   void ToPostfix(); // Преобразование infix в vector<string> postfix
