@@ -169,6 +169,10 @@
     <ClCompile Include="test_stack.cpp" />
     <ClCompile Include="test_unsortListTable.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="correct.txt" />
+    <Text Include="wrong.txt" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

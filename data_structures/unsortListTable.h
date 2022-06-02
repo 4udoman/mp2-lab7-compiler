@@ -15,6 +15,11 @@ private:
 public:
   UnsortListTable() {}
 
+  UnsortListTable(const UnsortListTable<TKey, TData>& t) {
+    for (auto it = t.list.cbegin(); it != t.list.cend(); ++it)
+      list.InsertFirst(*it);
+  }
+
   void changeValue(TKey key, TData data) 
   {
     TData* p = Find(key);
@@ -43,6 +48,18 @@ public:
   void PrintKeys() {
     for (auto it = list.cbegin(); it != list.cend(); ++it)
       std::cout << it->key << std::endl;
+  }
+
+  void clear() {
+    for (int i = list.GetSize(); i > 0; --i)
+      list.Delete(l.begin());
+  }
+
+  UnsortListTable<TKey, TData> operator=(const UnsortListTable<TKey, TData>& t) {
+    this->clear();
+    for (auto it = t.list.cbegin(); it != t.list.cend(); ++it)
+      list.InsertFirst(*it);
+    return *this;
   }
 
   UnsortListTable<TKey, TData> operator+(const UnsortListTable<TKey, TData>& t) {
