@@ -148,35 +148,41 @@ void TPostfix::Execute(HierarchyList::iterator* it)
       {
         std::cout << strArguments.pop();
         if (algArguments.empty())
-          continue;
+        {
+          it->next();
+          break;
+        }
         else
         {
           std::cout << algArguments.pop();
         }
-      }        
+      }
+      it->next();
     }
     else if (tmp == "writeln")
     {
+      //чтобы не заниматься такой дичью, проще перегрузить оператор вывода для variable.
       if (strArguments.empty())
       {
         if (algArguments.empty())
           throw std::string("Недостаточно аргументов для вызова функции!");
-        std::cout << algArguments.pop();
+        std::cout << algArguments.pop() << std::endl;
       }
       else
       {
         std::cout << strArguments.pop();
         if (algArguments.empty())
         {
+          it->next();
           std::cout << std::endl;
-          continue;
+          break;
         }
         else
         {
-          std::cout << algArguments.pop();
+          std::cout << algArguments.pop() << std::endl;
         }
-        std::cout << std::endl;
       }
+      it->next();
     }
     else if (tmp == "read")
     {
@@ -186,6 +192,7 @@ void TPostfix::Execute(HierarchyList::iterator* it)
         throw std::string("No such variable!");
       std::cin >> argument;
       *tableArg = argument;
+      it->next();
     }
     else if (tmp == ":=")
     {
@@ -196,6 +203,7 @@ void TPostfix::Execute(HierarchyList::iterator* it)
       if(tableArg == nullptr)
         throw std::string("No such variable!");
       *tableArg = right;
+      it->next();
     }
     //строковый аргмент внутри write
     else if (tmp[0] == '\'')
