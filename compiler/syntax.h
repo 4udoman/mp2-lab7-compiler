@@ -191,6 +191,17 @@ std::vector<std::string> Parser(const std::string& str)
       if (str[i] == '=')
         lexem += str[i++];
 
+    if (str.find("writeln") != std::string::npos && str.find("write") == str.find(lexem))
+      lexem = "writeln";
+
+    size_t pos = std::min(lexem.find("mod"), lexem.find("div"));
+    if (pos != std::string::npos)
+    {
+      infix.push_back(lexem.substr(0, pos));
+      infix.push_back(lexem.substr(pos, 3));
+      infix.push_back(lexem.substr(pos + 3));
+    }
+
     if ((lexem == "-") && (infix.size() == 0 || (infix.size() > 0 && infix[infix.size() - 1] == "("))) // ѕревращение унарного минуса в бинарный
       infix.push_back("0");
 
