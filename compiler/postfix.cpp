@@ -191,6 +191,7 @@ void TPostfix::Execute(HierarchyList::iterator* it)
     {
       Variable right = algArguments.pop();
       Variable left = algArguments.pop();
+      right.name = left.name;
       Variable* tableArg = table->Find(left.name);
       if(tableArg == nullptr)
         throw std::string("No such variable!");

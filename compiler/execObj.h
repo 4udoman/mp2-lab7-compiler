@@ -30,6 +30,7 @@ public:
       catch (std::string errorStr)
       {
         std::cout << errorStr;
+        break;
       }
     }
 

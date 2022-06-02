@@ -188,8 +188,8 @@ std::vector<std::string> Parser(const std::string& str)
     }
 
     if (lexem == ":" && i < str.size())
-      if (str[i + 1] == '=')
-        lexem += str[++i];
+      if (str[i] == '=')
+        lexem += str[i++];
 
     if ((lexem == "-") && (infix.size() == 0 || (infix.size() > 0 && infix[infix.size() - 1] == "("))) // ѕревращение унарного минуса в бинарный
       infix.push_back("0");
