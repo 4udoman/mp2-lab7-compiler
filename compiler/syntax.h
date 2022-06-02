@@ -195,6 +195,7 @@ std::vector<std::string> Parser(const std::string& str)
     {
       lexem = "writeln";
       i += 2;
+      infix.push_back(lexem);
       continue;
     }
 
