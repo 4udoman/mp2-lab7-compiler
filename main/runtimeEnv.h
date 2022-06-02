@@ -12,21 +12,23 @@ private:
 public:
   RuntimeEnv() {}
   void Run() {
-    int choice = 1; ExitCodes::CODES code;
-    std::string tmp; 
+    int numStr = 0;
+    int choice = 1;
+    ExitCodes::CODES code;
+    std::string tmp;
     HierarchyList* l; UnsortListTable<std::string, Variable>* t;
-    ExecObj *chosen_prog;
+    ExecObj* chosen_prog;
 
-    while (choice){
+    while (choice) {
       system("cls");
       std::cout <<
-      "        _--***  Pascal-- Emulator  ***--_" << std::endl <<
-      "Menu: " << std::endl <<
-      "1 Load Program" << std::endl <<
-      "2 Run Program" << std::endl <<
-      "3 Show program list" << std::endl <<
-      "0 Exit" << std::endl <<
-      "Choose Option:" << std::endl;
+        "        _--***  Pascal-- Emulator  ***--_" << std::endl <<
+        "Menu: " << std::endl <<
+        "1 Load Program" << std::endl <<
+        "2 Run Program" << std::endl <<
+        "3 Show program list" << std::endl <<
+        "0 Exit" << std::endl <<
+        "Choose Option:" << std::endl;
       std::cin >> choice;
       switch (choice) {
       case 0:
@@ -39,20 +41,21 @@ public:
         l = new HierarchyList();
         try {
           l->Build(tmp);
-        }catch (...) {
+        }
+        catch (...) {
           // ERROR wrong tabulation
           delete l;
           break;
         }
         std::cout << *l << std::endl << std::endl;
-        if(!(code = SyntChecker::Check(l))) {
-          std::cout << code;
+        if (!(code = SyntChecker::Check(l, t, numStr))) {
+          std::cout << code << "in " << numStr << " line\n";
           delete l;
           break;
         }
         std::cout << "Enter name: ";
         std::cin >> tmp;
-        progs.Insert(tmp, ExecObj(l, t));
+        progs.Insert(tmp, ExecObj{ l, t });
         break;
       case 2:
         std::cout << "Enter name: ";

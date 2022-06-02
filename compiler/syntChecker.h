@@ -39,25 +39,25 @@ private:
   }
 
 public:
-  static ExitCodes::CODES Check(HierarchyList* ls, UnsortListTable<std::string, Variable>& table, int& numStr)
+  static ExitCodes::CODES Check(HierarchyList* ls, UnsortListTable<std::string, Variable>* table, int& numStr)
   {
     Syntax synt;
-    table.clear();
+    table->clear();
     std::vector<bool> blocks = { false, false, false }; // program, const, var
+    bool isReady = false;;
     UnsortListTable<std::string, Variable> constTable, varTable;
     auto it = ls->begin();
     numStr = 0;
-    while (it.end() == false)
+
+    while (isReady == false)
     {
       ++numStr;
       std::vector<std::string> strParams = Parser(*it);
-
       if (strParams.size() == 0)
       {
         it.next();
         continue;
       }
-
       std::string tmp = strParams[0];
       if (tmp == "program")
       {
@@ -167,100 +167,107 @@ public:
         it.next();
         break;
       }
-      /* else if (tmp == "begin")
+      else if (tmp == "begin")
       {
-        it.down();
-        break;
+        isReady = true;
+        *table = constTable + varTable;
       }
-      else if (tmp == "end")
-      {
-        it.next();
-        break;
-      }
-      else if (tmp == "if")
-      {
-       //CheckBrackets();
-      }
-      else if (tmp == "else")
-      {
-        if (lastCompare == false)
-        {
-          it.down();
-          if (!it) // it == nullptr Вывод о том, что есть begin
-          {
-            it.next(); //перейдем в begin
-          }
-        }
-      }
-      else if (tmp == "write")
-      {
-        //чтобы не заниматься такой дичью, проще перегрузить оператор вывода для variable.
-        if (strArguments.empty())
-        {
-          if (algArguments.empty())
-            throw std::string("Недостаточно аргументов для вызова функции!");
-          std::cout << algArguments.pop();
-        }
-        else
-        {
-          std::cout << strArguments.pop();
-          if (algArguments.empty())
-            continue;
-          else
-          {
-            std::cout << algArguments.pop();
-          }
-        }
-      }
-      else if (tmp == "writeln")
-      {
-        if (strArguments.empty())
-        {
-          if (algArguments.empty())
-            throw std::string("Недостаточно аргументов для вызова функции!");
-          std::cout << algArguments.pop();
-        }
-        else
-        {
-          std::cout << strArguments.pop();
-          if (algArguments.empty())
-          {
-            std::cout << std::endl;
-            continue;
-          }
-          else
-          {
-            std::cout << algArguments.pop();
-          }
-          std::cout << std::endl;
-        }
-      }
-      else if (tmp == "read")
-      {
-        Variable argument = algArguments.pop();
-        Variable* tableArg = table->Find(argument.name);
-        if (tableArg == nullptr)
-          throw std::string("No such variable!");
-        std::cin >> argument;
-        *tableArg = argument;
-      }
-      else if (tmp == ":=")
-      {
-        Variable right = algArguments.pop();
-        Variable left = algArguments.pop();
-        Variable* tableArg = table->Find(left.name);
-        if (tableArg == nullptr)
-          throw std::string("No such variable!");
-        *tableArg = right;
-      }
-      // */
-
     }
 
-    //if (strParams[strParams.size() - 1] != ";")
-    //  return ExitCodes::SEMICOLON_IS_REQUIRED; // ; последний знак в строке
+    /* else if (tmp == "begin")
+{
+  it.down();
+  break;
+}
+else if (tmp == "end")
+{
+  it.next();
+  break;
+}
+else if (tmp == "if")
+{
+ //CheckBrackets();
+}
+else if (tmp == "else")
+{
+  if (lastCompare == false)
+  {
+    it.down();
+    if (!it) // it == nullptr Вывод о том, что есть begin
+    {
+      it.next(); //перейдем в begin
+    }
+  }
+}
+else if (tmp == "write")
+{
+  //чтобы не заниматься такой дичью, проще перегрузить оператор вывода для variable.
+  if (strArguments.empty())
+  {
+    if (algArguments.empty())
+      throw std::string("Недостаточно аргументов для вызова функции!");
+    std::cout << algArguments.pop();
+  }
+  else
+  {
+    std::cout << strArguments.pop();
+    if (algArguments.empty())
+      continue;
+    else
+    {
+      std::cout << algArguments.pop();
+    }
+  }
+}
+else if (tmp == "writeln")
+{
+  if (strArguments.empty())
+  {
+    if (algArguments.empty())
+      throw std::string("Недостаточно аргументов для вызова функции!");
+    std::cout << algArguments.pop();
+  }
+  else
+  {
+    std::cout << strArguments.pop();
+    if (algArguments.empty())
+    {
+      std::cout << std::endl;
+      continue;
+    }
+    else
+    {
+      std::cout << algArguments.pop();
+    }
+    std::cout << std::endl;
+  }
+}
+else if (tmp == "read")
+{
+  Variable argument = algArguments.pop();
+  Variable* tableArg = table->Find(argument.name);
+  if (tableArg == nullptr)
+    throw std::string("No such variable!");
+  std::cin >> argument;
+  *tableArg = argument;
+}
+else if (tmp == ":=")
+{
+  Variable right = algArguments.pop();
+  Variable left = algArguments.pop();
+  Variable* tableArg = table->Find(left.name);
+  if (tableArg == nullptr)
+    throw std::string("No such variable!");
+  *tableArg = right;
+}
+// */
+
+
+
+// it.end() 
+//if (strParams[strParams.size() - 1] != ";")
+//  return ExitCodes::SEMICOLON_IS_REQUIRED; // ; последний знак в строке
 
 
   }
-}
 };
