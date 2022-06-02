@@ -31,9 +31,13 @@ public:
     ops.emplace("then", std::vector<int>{ -1, -1 });
     ops.emplace("begin", std::vector<int>{ 0, 0 });
     ops.emplace("end", std::vector<int>{ 0, 0 });
+    ops.emplace("program", std::vector<int>{ -1, -1 });
+    ops.emplace(";", std::vector<int>{ -1, -1 });
+    ops.emplace(",", std::vector<int>{ -1, -1 });
+    ops.emplace("const", std::vector<int>{ -1, -1 });
+    ops.emplace("var", std::vector<int>{ -1, -1 });
+    ops.emplace("end.", std::vector<int>{ -1, -1 });
   }
-
-  static std::string str_op() { return std::string("*, +, -, (, ), mod, div"); }
 
   bool isOperation(const std::string& elem) const { return ops.find(elem) != ops.end(); } // Проверка является ли данный элемент операцией, которая объявлена в классе
 
@@ -50,7 +54,6 @@ public:
 
   Variable* Calc(const std::string& elem, Variable left, Variable right)
   {
-
     if (elem == "*")
     {
       Variable var(left * right);

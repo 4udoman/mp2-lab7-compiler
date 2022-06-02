@@ -18,7 +18,19 @@ void TPostfix::ToInfix(const std::string& str)
     }
     else
     {
-      while (!operation.isOperation(elem) && i < str.size())
+      if (elem == "'") // Нет проверки на i < str.size(), потому что считаем, что строка правильно введена на этом этапе
+      {
+        lexem += elem[0];
+        elem = str[++i];
+        while (elem != "'") // В проверке синтаксиса сюда добавить проверку на i < str.size()
+        {
+          lexem += elem[0];
+          elem = str[++i];
+        }
+        lexem += elem[0];
+        elem = str[++i];
+      }
+      while (!operation.isOperation(lexem) && !operation.isOperation(elem) && i < str.size())
       {
         if (elem != " ")
           lexem += (char)tolower(elem[0]);
@@ -225,6 +237,7 @@ void TPostfix::Execute(HierarchyList::iterator* it)
     else if (tmp == ":=")
     {
       Variable* right = algArguments.pop();
+      //delete
       Variable left = algArguments.pop();
       *right = left;
     }
@@ -244,7 +257,9 @@ void TPostfix::Execute(HierarchyList::iterator* it)
     else if (operation.IsMathOperation(tmp))
     {
       Variable right = algArguments.pop();
+      //delete
       Variable left = algArguments.pop();
+      //delete
       algArguments.push(operation.Calc(tmp, left, right));
     }
     //если ничего из этого, то это переменная либо число
