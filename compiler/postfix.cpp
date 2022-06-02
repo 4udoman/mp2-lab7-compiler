@@ -156,7 +156,7 @@ void TPostfix::Execute(HierarchyList::const_iterator* it)
       if (strArguments.empty())
       {
         if (algArguments.empty())
-          throw std::string("Недостаточно аргументов для вызова функции!");
+          throw ExitCodes::NOT_ENOUGH_ARGUMENTS_TO_CALL_THE_FUNCTION;
         std::cout << algArguments.pop();
       }   
       else
@@ -180,7 +180,7 @@ void TPostfix::Execute(HierarchyList::const_iterator* it)
       if (strArguments.empty())
       {
         if (algArguments.empty())
-          throw std::string("Недостаточно аргументов для вызова функции!");
+          throw ExitCodes::NOT_ENOUGH_ARGUMENTS_TO_CALL_THE_FUNCTION;
         std::cout << algArguments.pop() << std::endl;
       }
       else
@@ -204,7 +204,7 @@ void TPostfix::Execute(HierarchyList::const_iterator* it)
       Variable argument = algArguments.pop();
       Variable* tableArg = table->Find(argument.name);
       if (tableArg == nullptr)
-        throw std::string("No such variable!");
+        throw ExitCodes::NO_SUCH_VARIABLE;
       std::cin >> argument;
       *tableArg = argument;
       it->next();
@@ -216,7 +216,7 @@ void TPostfix::Execute(HierarchyList::const_iterator* it)
       right.name = left.name;
       Variable* tableArg = table->Find(left.name);
       if(tableArg == nullptr)
-        throw std::string("No such variable!");
+        throw ExitCodes::NO_SUCH_VARIABLE;
       *tableArg = right;
       it->next();
     }
@@ -254,7 +254,7 @@ void TPostfix::Execute(HierarchyList::const_iterator* it)
       {
         Variable* variable = table->Find(tmp);
         if (variable == nullptr)
-          throw std::string("No such variable!");
+          throw ExitCodes::NO_SUCH_VARIABLE;
         algArguments.push(*variable);
       }
     }
@@ -276,7 +276,6 @@ void TPostfix::UpdateTable(HierarchyList::const_iterator it)
   //Должен работать до тех пор, пока не конец блока
   while (!it)
   {
-    
     postfix.clear();
     infix = Parser(*it);
     ToPostfix();
@@ -336,7 +335,7 @@ void TPostfix::UpdateTable(HierarchyList::const_iterator it)
           }
         }
         else
-          throw std::string("Unexpected type");
+          throw ExitCodes::INVALID_VARIABLE_TYPE;
       }
       else if (postfix[i] == "=")
         continue;

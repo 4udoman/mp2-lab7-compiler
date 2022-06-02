@@ -26,17 +26,19 @@ public:
       try
       {
         postfix.Execute(&it);
-        //попали в конец блока
-        
       }
-      catch (std::string errorStr)
+      catch (ExitCodes::CODES exitCode)
       {
-        std::cout << errorStr;
+        std::cout << exitCode;
         break;
       }
     }
 
   }
 
-  ~ExecObj() {}
+  ~ExecObj() 
+  {
+    delete ls;
+    delete table;
+  }
 };

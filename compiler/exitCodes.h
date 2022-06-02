@@ -26,7 +26,8 @@ struct ExitCodes
 
     NO_SUCH_VARIABLE,
     DIVISION_BY_ZERO,
-    UNEXPECTED_ERROR
+    UNEXPECTED_ERROR,
+    NOT_ENOUGH_ARGUMENTS_TO_CALL_THE_FUNCTION
   };
   friend std::ostream& operator<<(std::ostream& os, const ExitCodes::CODES& err) {
     os << ExitCodes::ErrorList[err] << std::endl;
@@ -57,4 +58,5 @@ const char* ExitCodes::ErrorList[] = {
     "No such variable",
     "Division by zero",
     "Unexpected error"
+    "Not_enough_argumets_to_call_the_function"
 };

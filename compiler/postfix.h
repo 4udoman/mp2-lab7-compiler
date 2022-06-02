@@ -5,6 +5,7 @@
 #include "stack.h"
 #include "unsortListTable.h"
 #include "hierarchyList.h"
+#include "exitCodes.h"
 
 class TPostfix {
 private:
