@@ -199,6 +199,14 @@ std::vector<std::string> Parser(const std::string& str)
       continue;
     }
 
+    if (str.find("end.") != std::string::npos && str.find("end") == str.find(lexem))
+    {
+      lexem = "end.";
+      i += 1;
+      infix.push_back(lexem);
+      continue;
+    }
+
     size_t pos = std::min(lexem.find("mod"), lexem.find("div"));
     if (pos != std::string::npos)
     {

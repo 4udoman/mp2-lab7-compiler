@@ -9,11 +9,28 @@
 
 class RuntimeEnv {
   UnsortListTable<std::string, ExecObj> progs;
+
+  void istreamCleaner() {
+    while (getchar() != '\n');
+    std::cin.clear();
+  }
+
+  int Clamp(int border1, int border2) {
+    int choice = INT_MIN;
+    while (choice < border1 || choice > border2) {
+      std::cin >> choice;
+      if (choice < border1 || choice > border2) {
+        std::cout << "Invalid number entered. Try again.\n";
+        istreamCleaner();
+      }
+    }
+    return choice;
+  }
 public:
   RuntimeEnv() {}
 
   void Run() {
-    int numStr = 0; char choice;
+    int numStr = 0; int choice;
     ExitCodes::CODES code; std::string tmp;
     HierarchyList* l = nullptr; UnsortListTable<std::string, Variable>* t = nullptr;
     ExecObj* prog = nullptr;
@@ -27,18 +44,19 @@ public:
         "2 Run Program" << std::endl <<
         "3 Show program list" << std::endl <<
         "0 Exit" << std::endl;
-      choice = _getch();
+      choice = Clamp(0, 3);
       switch (choice) {
-      case '0': // EXIT
+      case 0: // EXIT
         std::cout << "Goodbye" << std::endl;
         return;
-      case '1': // LOAD PROGRAM
+      case 1: // LOAD PROGRAM
         std::cout << "Enter path: ";
-        std::cin >> tmp;
+        istreamCleaner();
+        getline(std::cin, tmp);
         l = new HierarchyList();
         try { l->Build(tmp); }
         catch (int line) {
-          if(line == -1)
+          if (line == -1)
             std::cout << "No such file" << std::endl;
           else
             std::cout << ExitCodes::CODES::WRONG_TABULATION << " on line " << line << std::endl;
@@ -48,17 +66,20 @@ public:
         std::cout << *l << std::endl << std::endl;
 
         if ((code = SyntChecker::Check(l, t, numStr)) != ExitCodes::ALL_IS_GOOD) {
-         std::cout << code << " on line " << numStr << std::endl;
-         delete l;
-         break;
+          std::cout << code << " on line " << numStr << std::endl;
+          delete l;
+          system("pause");
+          break;
         }
         std::cout << "Enter name: ";
-        std::cin >> tmp;
+        istreamCleaner();
+        getline(std::cin, tmp);
         progs.Insert(tmp, ExecObj(l, t, true));
+        system("pause");
         break;
-      case '2': // RUN PROGRAM
+      case 2: // RUN PROGRAM
         std::cout << "Enter name: ";
-        std::cin >> tmp;
+        getline(std::cin, tmp);
         if ((prog = progs.Find(tmp)) == nullptr) {
           std::cout << "No such program" << std::endl;
           break;
@@ -66,15 +87,14 @@ public:
         system("cls");
         prog->Execute();
         break;
-      case '3': // PRINT PROGRAMS
+      case 3: // PRINT PROGRAMS
         std::cout << "Program list:" << std::endl;
         progs.PrintKeys();
         break;
       default:
         std::cout << "No such command" << std::endl;
       }
-      std::cout << "Press any key to continue..." << std::endl;
-      _getch();
+      system("cls");
     }
   }
   ~RuntimeEnv() {}

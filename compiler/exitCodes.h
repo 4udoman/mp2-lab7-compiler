@@ -3,7 +3,7 @@
 
 struct ExitCodes
 {
-  static const char* ErrorList[]; 
+  static const char* ErrorList[];
   enum CODES
   {
     ALL_IS_GOOD = 0,
@@ -25,11 +25,13 @@ struct ExitCodes
     UNABLE_TO_CREATE_CONST,
     UNABLE_TO_CREATE_VAR,
     WRONG_TABULATION,
+    INCORRECT_BRACKETS,
 
 
     NO_SUCH_VARIABLE,
     DIVISION_BY_ZERO,
     UNEXPECTED_ERROR,
+    ATTEMPT_TO_CHANGE_A_CONSTANT_VARIABLE,
     NOT_ENOUGH_ARGUMENTS_TO_CALL_THE_FUNCTION
   };
   friend std::ostream& operator<<(std::ostream& os, const ExitCodes::CODES& err) {
@@ -58,11 +60,13 @@ const char* ExitCodes::ErrorList[] = {
     "Unable to create const",
     "Unable to create var",
     "Wrong tabulation",
+    "Incorrect brackets",
 
 
 
     "No such variable",
     "Division by zero",
-    "Unexpected error"
-    "Not_enough_argumets_to_call_the_function"
+    "Unexpected error",
+    "Attempt to change a constant variable",
+    "Not enough argumets to call the function"
 };

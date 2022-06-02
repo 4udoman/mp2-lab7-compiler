@@ -4,33 +4,13 @@
 #include "hierarchyList.h"
 #include "unsortListTable.h"
 
-bool BracketsCorrect(const std::string& str)
-{
-  TStack<bool> stack; // Стек для проверки наличия '('
-  for (const char& elem : str) {
-    if (elem == '(') {
-      stack.push(true);
-      continue;
-    }
-    if (elem == ')') {
-      if (stack.empty()) // Если стек пуст, то нет пары для ')' -> ошибка
-        return false;
-      stack.pop();
-      continue;
-    }
-  }
-  if (!stack.empty()) // Если стек не пуст, то слишком мало ')' -> ошибка
-    return false;
-  return true;
-}
-
 class SyntChecker
 {
 private:
   SyntChecker() = delete;
   ~SyntChecker() = delete;
 
-  static bool IsNumber(const std::string& lexem) { return (lexem.find_first_not_of("1234567890.") != std::string::npos); }
+  static bool IsNumber(const std::string& lexem) { return (lexem.find_first_not_of("1234567890.") == std::string::npos); }
 
   static bool IsVariable(const std::string& lexem)
   {
@@ -42,6 +22,26 @@ private:
   {
     Syntax synt;
     return synt.isSyntax(lexem);
+  }
+
+  static bool BracketsCorrect(const std::string& str)
+  {
+    TStack<bool> stack; // Стек для проверки наличия '('
+    for (const char& elem : str) {
+      if (elem == '(') {
+        stack.push(true);
+        continue;
+      }
+      if (elem == ')') {
+        if (stack.empty()) // Если стек пуст, то нет пары для ')' -> ошибка
+          return false;
+        stack.pop();
+        continue;
+      }
+    }
+    if (!stack.empty()) // Если стек не пуст, то слишком мало ')' -> ошибка
+      return false;
+    return true;
   }
 
 public:
@@ -79,7 +79,7 @@ public:
         }
         it.next();
         blocks[0] = true;
-        break;
+        continue;
       }
       else if (blocks[0] != true)
       {
@@ -105,7 +105,7 @@ public:
             return ExitCodes::INCORRECT_VARIABLE_NAME;
           if (strParams[1] != ":" || strParams[3] != "=")
             return ExitCodes::SEPARATOR_WAS_EXPECTED;
-          if (strParams[2] != "double" || strParams[2] != "integer")
+          if (strParams[2] != "double" && strParams[2] != "integer")
             return ExitCodes::INVALID_VARIABLE_TYPE;
           if (!IsNumber(strParams[4]))
             return ExitCodes::INVALID_VARIABLE_VALUE;
@@ -122,7 +122,7 @@ public:
         it.up();
         it.next();
         blocks[1] = true;
-        break;
+        continue;
       }
       else if (tmp == "var")
       {
@@ -139,7 +139,7 @@ public:
             return ExitCodes::UNEXPECTED_EXPRESSION;
           if (strParams[strParams.size() - 1] != ";")
             return ExitCodes::SEMICOLON_IS_REQUIRED;
-          if (strParams[strParams.size() - 2] != "double" || strParams[strParams.size() - 2] != "integer")
+          if (strParams[strParams.size() - 2] != "double" && strParams[strParams.size() - 2] != "integer")
             return ExitCodes::INVALID_VARIABLE_TYPE;
           if (strParams[strParams.size() - 3] != ":")
             return ExitCodes::UNEXPECTED_EXPRESSION;
@@ -170,7 +170,7 @@ public:
         blocks[1] = true; // Так как строгая последовательность
         blocks[2] = true;
         it.next();
-        break;
+        continue;
       }
       else if (tmp == "begin")
       {
@@ -179,23 +179,67 @@ public:
       }
     }
 
-    return ExitCodes::ALL_IS_GOOD;
-
     /*
+    TStack<bool> stack;
 
     while (it.end() != true)
     {
+      ++numStr;
+      if (!BracketsCorrect(*it))
+        return ExitCodes::INCORRECT_BRACKETS;
       std::vector<std::string> strParams = Parser(*it);
+      if (strParams.empty())
+      {
+        it.next();
+        continue;
+      }
       std::string firstWord = strParams[0];
       if (IsSyntax(firstWord) == true)
       {
 
+        if (firstWord == "begin" || firstWord == "end" || firstWord == "end.")
+        {
+          if (strParams.size() > 1)
+            return ExitCodes::UNEXPECTED_EXPRESSION;
+          if (firstWord == "begin")
+          {
+            it.down();
+            stack.push(true);
+            continue;
+          }
+          else if (firstWord == "end")
+          {
+            if (stack.empty())
+              return ExitCodes::TOO_MUCH_END;
+            it.next();
+            stack.pop();
+            continue;
+          }
+          if (!stack.empty())
+            return ExitCodes::TOO_MUCH_BEGIN;
+        }
+        else if (firstWord == ";" && strParams.size() > 1)
+        {
+          return ExitCodes::UNEXPECTED_EXPRESSION;
+        }
+        else {}
       }
       else
       {
-
+        if (strParams.size() != 4 || strParams[1] != ":=" || strParams[3] != ";") // только num := 3 ;, других случаев у нас нет
+        {
+          return ExitCodes::UNEXPECTED_EXPRESSION;
+        }
+        else
+        {
+          if (constTable.Find(strParams[0]) != nullptr)
+          {
+            return ExitCodes::ATTEMPT_TO_CHANGE_A_CONSTANT_VARIABLE;
+          }
+        }
       }
     }
+    /*
 
     /* else if (tmp == "begin")
 {
