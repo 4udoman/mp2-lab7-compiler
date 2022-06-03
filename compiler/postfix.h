@@ -10,7 +10,7 @@
 class TPostfix {
 private:
   Operations operation;
-  UnsortListTable<std::string, Variable>* table;
+  std::shared_ptr<UnsortListTable<std::string, Variable>> table;
   std::vector<std::string> infix;
   std::vector<std::string> postfix;
   TStack<bool> logicBlock; 
@@ -23,9 +23,9 @@ private:
 
 public:
   TPostfix() { table = nullptr; }
-  TPostfix(UnsortListTable<std::string, Variable>* _table) { table = _table; }
+  TPostfix(std::shared_ptr<UnsortListTable<std::string, Variable>> _table) { table = _table; }
 
-  void Init(UnsortListTable<std::string, Variable>* _table) { table = _table; }
+  void Init(std::shared_ptr<UnsortListTable<std::string, Variable>> _table) { table = _table; }
 
   std::vector<std::string> GetPostfix() const { return postfix; }
 

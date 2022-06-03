@@ -7,12 +7,11 @@
 class ExecObj
 {
 private:
-  HierarchyList* ls;
-  UnsortListTable<std::string, Variable>* table; // TODO
+  std::shared_ptr<HierarchyList> ls;
+  std::shared_ptr<UnsortListTable<std::string, Variable>> table; // TODO
   TPostfix postfix;
-  bool fake;
 public:
-  ExecObj(HierarchyList* _ls, UnsortListTable<std::string, Variable>* _table, bool _fake = false):fake(_fake)
+  ExecObj(std::shared_ptr<HierarchyList> _ls, std::shared_ptr<UnsortListTable<std::string, Variable>> _table)
   {
     ls = _ls;
     table = _table;
@@ -44,11 +43,5 @@ public:
 
   }
 
-  ~ExecObj() 
-  {
-    if (!fake) {
-      delete ls;
-      delete table;
-    }
-  }
+  ~ExecObj() {}
 };

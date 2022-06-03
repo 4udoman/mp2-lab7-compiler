@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include <conio.h>
+#include <memory>
 #include "exitCodes.h"
 #include "syntChecker.h"
 #include "execObj.h"
@@ -34,9 +35,10 @@ public:
     int choice;
     ExitCodes::CODES code;
     std::string tmp;
-    HierarchyList* l = nullptr;
+    
     // UnsortListTable<std::string, Variable>* t = nullptr;
-    UnsortListTable<std::string, Variable>* t = new UnsortListTable<std::string, Variable>();
+    std::shared_ptr<UnsortListTable<std::string, Variable>> t; ;
+    std::shared_ptr<HierarchyList> l;
     ExecObj* prog = nullptr;
 
     while (true) {
@@ -57,27 +59,25 @@ public:
         std::cout << "Enter path: ";
         istreamCleaner();
         getline(std::cin, tmp);
-        l = new HierarchyList();
+        l = std::make_shared<HierarchyList>();
         try { l->Build(tmp); }
         catch (int line) {
           if (line == -1)
             std::cout << "No such file" << std::endl;
           else
             std::cout << ExitCodes::CODES::WRONG_TABULATION << " on line " << line << std::endl;
-          delete l;
           break;
         }
         std::cout << *l << std::endl << std::endl;
+        t = std::make_shared<UnsortListTable<std::string, Variable>>();
         if ((code = SyntChecker::Check(l, t, numStr)) != ExitCodes::ALL_IS_GOOD) {
           std::cout << code << " on line " << numStr << std::endl;
-          delete l;
-          delete t;
           system("pause");
           break;
         }
         std::cout << "Enter name: ";
         getline(std::cin, tmp);
-        progs.Insert(tmp, ExecObj(l, t, true));
+        progs.Insert(tmp, ExecObj(l, t));
         system("pause");
         break;
       case 2: // RUN PROGRAM

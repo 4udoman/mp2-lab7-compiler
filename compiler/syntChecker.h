@@ -45,7 +45,7 @@ private:
   }
 
 public:
-  static ExitCodes::CODES Check(HierarchyList* ls, UnsortListTable<std::string, Variable>* table, int& numStr)
+  static ExitCodes::CODES Check(std::shared_ptr<HierarchyList> ls, std::shared_ptr < UnsortListTable<std::string, Variable>> table, int& numStr)
   {
     Syntax synt;
     std::vector<bool> blocks = { false, false, false }; // program, const, var
