@@ -91,6 +91,7 @@ public:
         system("cls");
         prog->Execute();
         istreamCleaner();
+        system("pause");
         break;
       case 3: // PRINT PROGRAMS
         std::cout << "Program list:" << std::endl;

@@ -29,7 +29,7 @@ TEST(HierarchyList, can_build_list_is_correct)
 {
   HierarchyList l;
   l.Build("correct.txt");
-  EXPECT_EQ("prog", *l.cbegin());
+  EXPECT_EQ("begin", *l.cbegin());
 }
 
 TEST(HierarchyList_iterator, can_go_next_list_elem)

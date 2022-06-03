@@ -191,7 +191,7 @@ std::vector<std::string> Parser(std::string str)
       if (str[i] == '=')
         lexem += str[i++];
 
-    if (str.find("writeln") != std::string::npos && str.find("write") == str.find(lexem))
+    if (lexem != "" && str.find("writeln") != std::string::npos && str.find("write") == str.find(lexem))
     {
       lexem = "writeln";
       i += 2;

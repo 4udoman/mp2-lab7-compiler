@@ -29,6 +29,9 @@
     <Text Include="prog2.txt">
       <Filter>Файлы ресурсов</Filter>
     </Text>
+    <Text Include="prog3.txt">
+      <Filter>Файлы ресурсов</Filter>
+    </Text>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">

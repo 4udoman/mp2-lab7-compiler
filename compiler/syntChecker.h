@@ -182,12 +182,8 @@ public:
 
     TStack<bool> stack;
 
-    while (it.end() != true)
+    while (*it != "end.")
     {
-      if (!it == false)
-      {
-        it.up();
-      }
       ++numStr;
       if (!BracketsCorrect(*it))
         return ExitCodes::INCORRECT_BRACKETS;
@@ -226,20 +222,58 @@ public:
         {
           return ExitCodes::UNEXPECTED_EXPRESSION;
         }
-        else if (firstWord == "if" || firstWord == "else")
+        else if (firstWord == "if")
         {
           it.down();
-          if (!it == false)
+          if (!(!it))
           {
             it.up();
             it.next();
           }
         }
-        it.next();
+        else if (firstWord == "else")
+        {
+          it.down();
+          if (!it)
+          {
+            continue;
+          }
+          else //есть begin
+          {
+            it.up();
+            //Чтобы пропустить begin end
+            it.next();
+            it.next();
+            it.next();
+          }
+        }
+        else if (firstWord == "write" || firstWord == "writeln")
+        {
+
+          if (strParams.size() < 5)
+            return ExitCodes::NOT_ENOUGH_ARGUMENTS_TO_CALL_THE_FUNCTION;
+          int numCommas = 0;
+          for (int i = 0; i < strParams.size(); i++)
+            if (strParams[i] == ",")
+              numCommas++;
+          if (numCommas > 1)
+            return ExitCodes::UNEXPECTED_EXPRESSION;
+          it.next();
+        }
+        else if (firstWord == "read")
+        {
+          if (strParams.size() != 5) // read ( var ) ;
+            return ExitCodes::UNEXPECTED_EXPRESSION;
+          if (strParams[1] != "(" || strParams[3] != ")" || strParams[strParams.size() - 1] != ";")
+            return ExitCodes::UNEXPECTED_EXPRESSION;
+          if (table->Find(strParams[2]) == nullptr)
+            return ExitCodes::NO_SUCH_VARIABLE;
+          it.next();
+        }
       }
       else
       {
-        if (strParams.size() != 4 || strParams[1] != ":=" || strParams[3] != ";") // только num := 3 ;, других случаев у нас нет
+        if (strParams[1] != ":=" || strParams[strParams.size() - 1] != ";") // только num := 3 ;, других случаев у нас нет
         {
           return ExitCodes::UNEXPECTED_EXPRESSION;
         }
@@ -250,6 +284,11 @@ public:
             return ExitCodes::ATTEMPT_TO_CHANGE_A_CONSTANT_VARIABLE;
           }
         }
+        it.next();
+      }
+      while (!(!it))
+      {
+        it.up();
         it.next();
       }
     }
