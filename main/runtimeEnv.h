@@ -31,11 +31,11 @@ public:
   RuntimeEnv() {}
 
   void Run() {
-    int numStr = 0; 
+    int numStr = 0;
     int choice;
     ExitCodes::CODES code;
     std::string tmp;
-    
+
     // UnsortListTable<std::string, Variable>* t = nullptr;
     std::shared_ptr<UnsortListTable<std::string, Variable>> t; ;
     std::shared_ptr<HierarchyList> l;

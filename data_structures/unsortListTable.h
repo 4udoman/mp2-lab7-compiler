@@ -4,7 +4,7 @@
 #include "list.h"
 
 template<class TKey, class TData>
-class UnsortListTable{
+class UnsortListTable {
 private:
   struct Cell {
     TKey key;
@@ -20,7 +20,7 @@ public:
       list.InsertFirst(*it);
   }
 
-  void changeValue(TKey key, TData data) 
+  void changeValue(TKey key, TData data)
   {
     TData* p = Find(key);
     if (p == nullptr)
@@ -72,5 +72,4 @@ public:
   }
 
   ~UnsortListTable() { }
-
 };

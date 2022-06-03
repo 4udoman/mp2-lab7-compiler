@@ -31,7 +31,7 @@ public:
     delete[] pMem;
   }
 
-  int size(){ return curSize; }
+  int size() { return curSize; }
 
   bool empty() { return top == -1; } // Проверка пустой ли стек
 

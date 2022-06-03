@@ -24,7 +24,7 @@ public:
     table = exObj.table;
     postfix.Init(table);
   }
-  
+
   void Execute()
   {
     auto it = ls->cbegin();

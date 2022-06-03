@@ -26,4 +26,3 @@ TEST(UnsortListTable, cant_find_non_existing_elem_in_table)
   Tab t;
   EXPECT_EQ(t.Find("Hi"), nullptr);
 }
-

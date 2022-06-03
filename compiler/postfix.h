@@ -13,7 +13,7 @@ private:
   std::shared_ptr<UnsortListTable<std::string, Variable>> table;
   std::vector<std::string> infix;
   std::vector<std::string> postfix;
-  TStack<bool> logicBlock; 
+  TStack<bool> logicBlock;
   bool lastCompare = false;
 
   void operator=(const TPostfix&) = delete; // Запрет на присваивание

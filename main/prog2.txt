@@ -11,7 +11,7 @@ begin
   if(d mod 2 = 0) then
   begin
     res:=(numa1 - numa2 * 5 div 2);
-    writeln('Res ', Res); 
+    writeln('Res ', Res);
   end
   else
   begin

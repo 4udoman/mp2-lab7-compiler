@@ -4,7 +4,7 @@
 #include <string>
 #include "Stack.h"
 
-class HierarchyList 
+class HierarchyList
 {
 private:
   struct Node {
@@ -53,23 +53,26 @@ public:
 
     while (is.peek() != EOF) {
       std::getline(is, s);
-      if((layer=s.find_first_not_of(" \n")) != std::string::npos)
-        if(layer == cur_layer) {
+      if ((layer = s.find_first_not_of(" \n")) != std::string::npos)
+        if (layer == cur_layer) {
           it.Next(0) = new Node(s.substr(layer));
           it.next();
-        }else if (layer == cur_layer + 2) {
+        }
+        else if (layer == cur_layer + 2) {
           it.Next(1) = new Node(s.substr(layer));
           it.down();
           cur_layer = layer;
-        }else if (layer < cur_layer && (cur_layer - layer) % 2 == 0) {
-          for(int i = 0; i < (cur_layer - layer)/2; ++i)
+        }
+        else if (layer < cur_layer && (cur_layer - layer) % 2 == 0) {
+          for (int i = 0; i < (cur_layer - layer) / 2; ++i)
             it.up();
           it.Next(0) = new Node(s.substr(layer));
           it.next();
           cur_layer = layer;
-        } else
+        }
+        else
           throw line;
-        ++line;
+      ++line;
     }
     return is;
   }
@@ -82,11 +85,12 @@ public:
           std::cout << "| ";
         std::cout << *it << std::endl;
         it.down();
-      }else if (it.empty()) break;
-        else {
-          it.up();
-          it.next();
-        }
+      }
+      else if (it.empty()) break;
+      else {
+        it.up();
+        it.next();
+      }
     }
     return os;
   }
@@ -99,14 +103,14 @@ public:
   class iterator {
     TStack<Node*>* st;
     Node* cur;
-    
+
   public:
     Node*& Next(int i) { return cur->next[i]; }
     friend class HierarchyList;
-    
-    iterator(): st(nullptr), cur(nullptr) {}
+
+    iterator() : st(nullptr), cur(nullptr) {}
     iterator(Node* x) : cur(x) { st = new TStack<Node*>; }
-    iterator(const HierarchyList::iterator& it):cur(it.cur) { st = new TStack<Node*>; }
+    iterator(const HierarchyList::iterator& it) :cur(it.cur) { st = new TStack<Node*>; }
     iterator& operator=(const iterator& i) {
       cur = i.cur;
       delete st;

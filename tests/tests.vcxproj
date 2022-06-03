@@ -160,13 +160,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\gtest\src\gtest_main.cc" />
-    <ClCompile Include="tests.cpp" />
-    <ClCompile Include="test_binary_tree.cpp" />
-    <ClCompile Include="test_syntChecker.cpp" />
     <ClCompile Include="test_hierarchList.cpp" />
     <ClCompile Include="test_list.cpp" />
     <ClCompile Include="test_postfix.cpp" />
     <ClCompile Include="test_stack.cpp" />
+    <ClCompile Include="test_syntChecker.cpp" />
     <ClCompile Include="test_unsortListTable.cpp" />
   </ItemGroup>
   <ItemGroup>
