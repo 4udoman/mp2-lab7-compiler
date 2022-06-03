@@ -20,10 +20,13 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="program.txt">
+    <Text Include="test.txt">
       <Filter>Файлы ресурсов</Filter>
     </Text>
-    <Text Include="test.txt">
+    <Text Include="prog1.txt">
+      <Filter>Файлы ресурсов</Filter>
+    </Text>
+    <Text Include="prog2.txt">
       <Filter>Файлы ресурсов</Filter>
     </Text>
   </ItemGroup>

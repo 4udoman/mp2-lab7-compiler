@@ -53,6 +53,8 @@ public:
     UnsortListTable<std::string, Variable> constTable, varTable;
     auto it = ls->begin();
     numStr = 0;
+    if (table != nullptr)
+      table->clear();
 
     while (isReady == false)
     {
@@ -334,6 +336,6 @@ else if (tmp == ":=")
 //if (strParams[strParams.size() - 1] != ";")
 //  return ExitCodes::SEMICOLON_IS_REQUIRED; // ; последний знак в строке
 
-
+    return ExitCodes::ALL_IS_GOOD;
   }
 };

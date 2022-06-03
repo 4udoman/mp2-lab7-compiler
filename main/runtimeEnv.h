@@ -30,9 +30,13 @@ public:
   RuntimeEnv() {}
 
   void Run() {
-    int numStr = 0; int choice;
-    ExitCodes::CODES code; std::string tmp;
-    HierarchyList* l = nullptr; UnsortListTable<std::string, Variable>* t = nullptr;
+    int numStr = 0; 
+    int choice;
+    ExitCodes::CODES code;
+    std::string tmp;
+    HierarchyList* l = nullptr;
+    // UnsortListTable<std::string, Variable>* t = nullptr;
+    UnsortListTable<std::string, Variable>* t = new UnsortListTable<std::string, Variable>();
     ExecObj* prog = nullptr;
 
     while (true) {
@@ -64,21 +68,21 @@ public:
           break;
         }
         std::cout << *l << std::endl << std::endl;
-
         if ((code = SyntChecker::Check(l, t, numStr)) != ExitCodes::ALL_IS_GOOD) {
           std::cout << code << " on line " << numStr << std::endl;
           delete l;
+          delete t;
           system("pause");
           break;
         }
         std::cout << "Enter name: ";
-        istreamCleaner();
         getline(std::cin, tmp);
         progs.Insert(tmp, ExecObj(l, t, true));
         system("pause");
         break;
       case 2: // RUN PROGRAM
         std::cout << "Enter name: ";
+        istreamCleaner();
         getline(std::cin, tmp);
         if ((prog = progs.Find(tmp)) == nullptr) {
           std::cout << "No such program" << std::endl;
@@ -86,10 +90,13 @@ public:
         }
         system("cls");
         prog->Execute();
+        istreamCleaner();
         break;
       case 3: // PRINT PROGRAMS
         std::cout << "Program list:" << std::endl;
+        istreamCleaner();
         progs.PrintKeys();
+        istreamCleaner();
         break;
       default:
         std::cout << "No such command" << std::endl;
