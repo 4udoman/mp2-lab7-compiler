@@ -181,6 +181,7 @@ public:
     }
 
     /*
+
     TStack<bool> stack;
 
     while (it.end() != true)
@@ -208,7 +209,7 @@ public:
             stack.push(true);
             continue;
           }
-          else if (firstWord == "end")
+          else
           {
             if (stack.empty())
               return ExitCodes::TOO_MUCH_END;

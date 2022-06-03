@@ -151,7 +151,7 @@ public:
   bool isSyntax(const std::string& elem) const { return std::find(synt.begin(), synt.end(), elem) != synt.end(); }
 };
 
-std::vector<std::string> Parser(const std::string& str)
+std::vector<std::string> Parser(std::string str)
 {
   Syntax syntax;
   std::vector<std::string> infix;
