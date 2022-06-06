@@ -6,7 +6,7 @@
 #include "syntChecker.h"
 #include "execObj.h"
 #include "unsortListTable.h"
-#include "postfix.cpp"
+#include "postfix.h"
 
 class RuntimeEnv {
   UnsortListTable<std::string, ExecObj> progs;

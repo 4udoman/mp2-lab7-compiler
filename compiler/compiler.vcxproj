@@ -151,7 +151,9 @@
     <ClInclude Include="variable.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="exitCodes.cpp" />
     <ClCompile Include="postfix.cpp" />
+    <ClCompile Include="syntax.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
