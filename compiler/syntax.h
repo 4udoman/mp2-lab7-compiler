@@ -5,6 +5,7 @@
 #include <vector>
 #include <iostream>
 #include "variable.h"
+#include "exitCodes.h"
 
 class Operations // Класс, хранящий поддерживаемые операции
 {
@@ -67,13 +68,13 @@ public:
     if (elem == "mod")
     {
       if (right.val.i == 0)
-        throw std::string("Деление на 0!");
+        throw ExitCodes::DIVISION_BY_ZERO;
       return Variable(left % right);
     }
     if (elem == "div")
     {
       if (right.val.i == 0)
-        throw std::string("Деление на 0!");
+        throw ExitCodes::DIVISION_BY_ZERO;
       return Variable(left / right);
     }
     if (elem == "=")
